@@ -1,71 +1,98 @@
 import React from 'react';
-import { 
-  Button,
-  View,
-  Text
-} from 'react-native';
-import { createAppContainer } from 'react-navigation';
+import { Text } from 'react-native';
+import {
+  createSwitchNavigator,
+  createAppContainer
+} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import reducers from './src/reducers';
 
-class HomeScreen extends React.Component {
-  render() {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Home Screen</Text>
-        <Icon name="rocket" size={30} color="#00ff00" />
-        <Button
-          title="Go to Details"
-          onPress={() => this.props.navigation.navigate('Details')}
-        />
-        <Button
-          title="Go to Details"
-          onPress={() => {
-            this.props.navigation.navigate('Details', {
-              itemId: 86,
-              otherParam: 'anything you want here',
-            });
-          }}
-        />
-      </View>
-    );
-  }
-}
+import SplashScreen from './src/screens/splash/SplashScreen';
+import OnbroadingScreen from './src/screens/onbroading/OnbroadingScreen';
+import SignInScreen from './src/screens/login/SignInScreen';
+import SignUpScreen from './src/screens/login/SignUpScreen';
+import ForgetPasswordScreen from './src/screens/login/ForgetPasswordScreen';
 
-class DetailsScreen extends React.Component {
-  render() {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Details Screen</Text>
-        <Button
-          title="Go to Details... again"
-          onPress={() => this.props.navigation.navigate('Details')}
-        />
-        <Button
-          title="Go to Details... again"
-          onPress={() => this.props.navigation.push('Details')}
-        />
-        <Button
-          title="Go to Home"
-          onPress={() => this.props.navigation.navigate('Home')}
-        />
-        <Button
-          title="Go back"
-          onPress={() => this.props.navigation.goBack()}
-        />
-      </View>
-    );
-  }
-}
+import Home from './src/screens/home/Home';
 
-const AppNavigator = createStackNavigator(
+const AppNavigator = createBottomTabNavigator(
   {
-    Home: HomeScreen,
-    Details: DetailsScreen,
+    Home: {
+      screen: Home,
+      navigationOptions: {
+        tabBarLabel: ({ tintColor }) => (
+          <Text style={{ fontSize: 10, color: tintColor }}>Home</Text>
+        ),
+        tabBarIcon: ({ horizontal, tintColor }) =>
+          <Icon name="home" size={20} color={tintColor} />
+      }
+    },
+    HighScores: {
+      screen: Home,
+      navigationOptions: {
+        tabBarLabel: ({ tintColor }) => (
+          <Text style={{ fontSize: 10, color: tintColor }}>HighScores</Text>
+        ),
+        tabBarIcon: ({ tintColor }) =>
+          <Icon name="chart-bar" size={20} color={tintColor} />
+      }
+    },
+    Settings: {
+      screen: Home,
+      navigationOptions: {
+        tabBarLabel: ({ tintColor }) => (
+          <Text style={{ fontSize: 10, color: tintColor }}>Settings</Text>
+        ),
+        tabBarIcon: ({ horizontal, tintColor }) =>
+          <Icon name="cogs" size={20} color={tintColor} />
+      }
+    }
   },
   {
-    initialRouteName: 'Home',
+    tabBarOptions: {
+      activeTintColor: 'orange',
+      inactiveTintColor: 'gray'
+    }
   }
 );
 
-export default createAppContainer(AppNavigator);
+const AuthStack = createStackNavigator(
+  { 
+    Onbroading: OnbroadingScreen,
+    SignIn: SignInScreen,
+    SignUp: SignUpScreen,
+    ForgetPassword: ForgetPasswordScreen,
+  },
+  {
+    initialRouteName: 'Onbroading',
+  }  
+);
+
+const InitialNavigator = createSwitchNavigator(
+  {
+    Splash: SplashScreen,
+    Auth: AuthStack,
+    App: AppNavigator,
+  },
+  {
+    initialRouteName: 'Splash',
+  }
+);
+
+const AppContainer = createAppContainer(InitialNavigator);
+
+class App extends React.Component {
+  render() {
+    return (
+      <Provider store={createStore(reducers)}>
+        <AppContainer />
+      </Provider>
+    );
+  }
+}
+
+export default App;
