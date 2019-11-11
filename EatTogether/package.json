@@ -7,8 +7,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "firebase": "^7.3.0",
     "react": "16.8.3",
-    "react-native": "0.59.8"
+    "react-native": "0.59.8",
+    "react-native-router-flux": "^4.0.6"
   },
   "devDependencies": {
     "@babel/core": "7.6.4",

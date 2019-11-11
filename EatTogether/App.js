@@ -1,48 +1,74 @@
-import React, {Component} from 'react';
-import {
-  ActivityIndicator,
-  ImageBackground,
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { KeyboardAvoidingView, StyleSheet, ImageBackground } from 'react-native';
+import Login from './screens/login';
+import Register from './screens/singup';
+import ForgotPassword from './screens/forgotpassword';
+import { w } from './api/Dimensions';
 
-export default class App extends Component {
+export default class FirebaseLogin extends Component {
+  state = {
+    currentScreen: 'login', // can be: 'login' or 'register' or 'forgot'
+  };
+
+  changeScreen = screenName => () => {
+    this.setState({ currentScreen: screenName });
+  };
+
+  userSuccessfullyLoggedIn = (user) => {
+    this.props.login(user);
+  };
+
   render() {
+    let screenToShow;
+
+    switch(this.state.currentScreen) {
+      case 'login':
+        screenToShow = <Login change={this.changeScreen} success={this.userSuccessfullyLoggedIn}/>;
+        break;
+      case 'register':
+        screenToShow = <Register change={this.changeScreen} />;
+        break;
+      case 'forgot':
+        screenToShow = <ForgotPassword change={this.changeScreen}/>;
+        break;
+    }
+
     return (
-      <>
-        <StatusBar barStyle="dark-content" translucent={true} backgroundColor="transparent"/>
-        <ImageBackground source={require('./assets/bg01.jpg')} style={styles.backgroundImage}>
-          <View>
-            <Text style={styles.headerText}>Eat Together</Text>
-            <ActivityIndicator animating={true} size="small" color="#ffffff" style={styles.activityIndicator}/>
-          </View>
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={-w(40)}
+        style={styles.container}
+      >
+        <ImageBackground
+          source={this.props.background}
+          style={styles.background}
+          resizeMode="stretch"
+
+        >
+          {screenToShow}
         </ImageBackground>
-      </>
-    );
+      </KeyboardAvoidingView>
+    )
   }
+}
+
+FirebaseLogin.propTypes = {
+  login: PropTypes.func.isRequired,
+};
+
+FirebaseLogin.defaultProps = {
+  background: null,
 };
 
 const styles = StyleSheet.create({
-  activityIndicator: {
-    marginTop: 50,
-  },
-  backgroundImage: {
-    flex: 1,
+  container: {
     width: '100%',
     height: '100%',
-    flexDirection: 'column',
-    backgroundColor:'transparent',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    backgroundColor: '#555',
   },
-  headerText: {
-    marginTop: 100,
-    alignContent: 'center',
-    color: 'white',
-    fontSize: 64,
+  background: {
+    width: '100%',
+    height: '100%',
   }
 });
