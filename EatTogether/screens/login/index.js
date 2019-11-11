@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Text, Image} from 'react-native';
 import InputField from "../../components/login/InputField";
 import {w, h, totalSize} from '../../api/Dimensions';
 import GetStarted from './GetStarted';
-//import Firebase from '../../api/Firebase';
+import Firebase from '../../api/Firebase';
 
 const companyLogo = require('../../assets/login/companylogo.png');
 const email = require('../../assets/login/email.png');
@@ -44,11 +44,11 @@ export default class Login extends Component {
 
   loginToFireBase = (email, password) => {
     this.setState({ isLogin: true });
-    // Firebase.userLogin(email, password)
-    //   .then(user => {
-    //     if(user) this.props.success(user);
-    //     this.setState({ isLogin: false });
-    //   });
+    Firebase.userLogin(email, password)
+      .then(user => {
+        if(user) this.props.success(user);
+        this.setState({ isLogin: false });
+      });
   };
 
   render() {
@@ -80,12 +80,12 @@ export default class Login extends Component {
         />
         <View style={styles.textContainer}>
           <TouchableOpacity 
-          // onPress={this.props.change('register')} 
+          onPress={this.props.change('register')} 
           style={styles.touchable} activeOpacity={0.6}>
             <Text style={styles.createAccount}>Create Account</Text>
           </TouchableOpacity>
           <TouchableOpacity 
-          // onPress={this.props.change('forgot')} 
+           onPress={this.props.change('forgot')} 
           style={styles.touchable} activeOpacity={0.6}>
             <Text style={styles.forgotPassword}>Forgot Password</Text>
           </TouchableOpacity>
