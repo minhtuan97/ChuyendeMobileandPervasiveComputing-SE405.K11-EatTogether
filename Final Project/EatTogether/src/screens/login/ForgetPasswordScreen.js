@@ -6,8 +6,11 @@ import {
   StyleSheet,
   View,
   Text,
+  TextInput,
+  TouchableOpacity,
   StatusBar,
 } from 'react-native';
+import { TextInput } from 'react-native-paper';
 
 export default class ForgetPasswordScreen extends Component {
 
@@ -17,23 +20,25 @@ export default class ForgetPasswordScreen extends Component {
   
   render() {
     return (
-      <>
-        <StatusBar barStyle='dark-content' translucent={true} backgroundColor='transparent'/>
-        <ImageBackground source={require('../../assets/images/bg03.jpg')} style={styles.imageBackground}>
-          <View style={styles.header}>
-            <Text style={styles.appTitle}>Quên mật khẩu</Text>
-            <ActivityIndicator animating={true} color='green' size='small' style={styles.activityIndicator}/>
-          </View>
-          <View style={styles.main}></View>
-          <View style={styles.footer}>
-            <TouchableOpacity  onPress={this._onPressButton}>
-              <View style={styles.button}>
-                <Text style={styles.joinText}>Đổi mật khẩu</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-      </>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text>Nhập Email đăng nhập</Text>
+          <TextInput
+            style={styles.usernameTextInput}
+            placeholder="Tên tài khoản"
+            //onChangeText={(text) => this.setState({text})}
+            //value={this.state.text}
+          />
+        </View>
+        <View style={styles.main}></View>
+        <View style={styles.footer}>
+          <TouchableOpacity  onPress={this._onPressButton}>
+            <View style={styles.button}>
+              <Text style={styles.joinText}>Đổi mật khẩu</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   }
 };
@@ -41,6 +46,9 @@ export default class ForgetPasswordScreen extends Component {
 const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   activityIndicator: {
     marginTop: 50,
   },
@@ -58,6 +66,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 6,
+    margin: 30,
     justifyContent: 'center',
   },
   main: {

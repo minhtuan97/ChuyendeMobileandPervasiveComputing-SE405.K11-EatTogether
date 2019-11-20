@@ -1,23 +1,111 @@
 import firebase from 'firebase';
 
+const configMinhTuan = {
+  apiKey: "AIzaSyAFw1N1TprRQAAqDzuhwHA4sBlXBk1ejiQ",
+  authDomain: "eattogetherdb.firebaseapp.com",
+  databaseURL: "https://eattogetherdb.firebaseio.com",
+  projectId: "eattogetherdb",
+  storageBucket: "eattogetherdb.appspot.com",
+  messagingSenderId: "1074702581493",
+  appId: "1:1074702581493:web:839f1b64bfc375542d0fbc",
+  measurementId: "G-2C7F9P3YD4"
+};
+
+const configSiVai = {
+  apiKey: "AIzaSyC6V8kFSr1OhfUbdZStspDc52L0PMj_Y_E",
+  authDomain: "eattogether-firebase.firebaseapp.com",
+  databaseURL: "https://eattogether-firebase.firebaseio.com",
+  projectId: "eattogether-firebase",
+  storageBucket: "eattogether-firebase.appspot.com",
+  messagingSenderId: "1046551399502",
+  appId: "1:1046551399502:web:21b81e05eebc237074871f",
+  measurementId: "G-0GPG5EHK2M"
+};
+
 class FirebaseSDK {
+
   constructor() {
     if (!firebase.apps.length) {
       //avoid re-initializing
-      firebase.initializeApp({
-        apiKey: "AIzaSyC6V8kFSr1OhfUbdZStspDc52L0PMj_Y_E",
-        authDomain: "eattogether-firebase.firebaseapp.com",
-        databaseURL: "https://eattogether-firebase.firebaseio.com",
-        projectId: "eattogether-firebase",
-        storageBucket: "eattogether-firebase.appspot.com",
-        messagingSenderId: "1046551399502",
-        appId: "1:1046551399502:web:21b81e05eebc237074871f",
-        measurementId: "G-0GPG5EHK2M"
-      });
-    
+      firebase.initializeApp(configSiVai);
     }
   }
 
+  userLogin = (email, password) => {
+    return new Promise(resolve => {
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .catch(error => {
+          switch (error.code) {
+            case 'auth/invalid-email':
+              console.warn('Invalid email address format.');
+              break;
+            case 'auth/user-not-found':
+            case 'auth/wrong-password':
+              console.warn('Invalid email address or password');
+              break;
+            default:
+              console.warn('Check your internet connection');
+          }
+          resolve(null);
+        }).then(user => {
+        if (user) {
+          resolve(user);
+        }
+      });
+    })
+  };
+
+  createFirebaseAccount = (name, email, password) => {
+    return new Promise(resolve => {
+      firebase.auth().createUserWithEmailAndPassword(email, password).catch(error => {
+        switch (error.code) {
+          case 'auth/email-already-in-use':
+            console.warn('This email address is already taken');
+            break;
+          case 'auth/invalid-email':
+            console.warn('Invalid e-mail address format');
+            break;
+          case 'auth/weak-password':
+            console.warn('Password is too weak');
+            break;
+          default:
+            console.warn('Check your internet connection');
+        }
+        resolve(false);
+      }).then(info => {
+        if (info) {
+          fire.auth().currentUser.updateProfile({
+            displayName: name
+          });
+          resolve(true);
+        }
+      });
+    });
+  };
+
+  sendEmailWithPassword = (email) => {
+    return new Promise(resolve => {
+      firebase.auth().sendPasswordResetEmail(email)
+        .then(() => {
+          console.warn('Email with new password has been sent');
+          resolve(true);
+        }).catch(error => {
+          switch (error.code) {
+            case 'auth/invalid-email':
+              console.warn('Invalid email address format');
+              break;
+            case 'auth/user-not-found':
+              console.warn('User with this email does not exist');
+              break;
+            default:
+              console.warn('Check your internet connection');
+          }
+          resolve(false);
+        });
+    })
+  };
+
+  // Login
   login = async (user, success_callback, failed_callback) => {
     await firebase
       .auth()
@@ -25,6 +113,7 @@ class FirebaseSDK {
       .then(success_callback, failed_callback);
   };
 
+  // Create Account
   createAccount = async user => {
     firebase
       .auth()
@@ -57,6 +146,7 @@ class FirebaseSDK {
       );
   };
   
+  // Upload Image
   uploadImage = async uri => {
     console.log('got image to upload. uri:' + uri);
     try {
@@ -83,6 +173,7 @@ class FirebaseSDK {
     }
   };
   
+  // 
   updateAvatar = url => {
   
     var userf = firebase.auth().currentUser;
@@ -103,6 +194,7 @@ class FirebaseSDK {
     }
   };
 }
+
 const firebaseSDK = new FirebaseSDK();
 
 export default firebaseSDK;

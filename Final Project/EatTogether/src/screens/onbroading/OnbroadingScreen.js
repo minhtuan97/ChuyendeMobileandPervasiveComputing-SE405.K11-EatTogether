@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   Dimensions,
+  Image,
   StatusBar,
   StyleSheet,
   Text,
@@ -8,36 +9,25 @@ import {
   View, 
 } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import SliderEntry from '../onbroading/SliderEntry';
 
 const { width } = Dimensions.get('window');
 
-function wp (percentage) {
-  const value = (percentage * width) / 100;
-  return Math.round(value);
-}
-const sliderWidth = wp(75);
-const itemHorizontalMargin = wp(2);
-
-const itemWidth = sliderWidth;
-
-const SLIDER_FIRST_ITEM = 1;
-
+// Mảng obj các onbroading
 const ENTRIES = [
   {
-    title: 'Hôm nay mình sẽ ăn gì đây nhỉ?',
+    title: 'Hôm nay mình sẽ ăn gì đây?',
     subtitle: 'Bún đậu, Phở bò, Cơm gà, Bánh xèo...',
     illustration: require('../../assets/images/food.jpg')
-  },
-  {
-    title: 'Chia sẽ sở thích ăn uống',
-    subtitle: 'Chia sẽ các địa điểm ăn ngon...',
-    illustration: require('../../assets/images/share.jpg')
   },
   {
     title: 'Tìm bạn ăn chung dễ dàng',
     subtitle: 'Bạn không còn phải đi ăn một mình nữa...',
     illustration: require('../../assets/images/cheers.jpg')
+  },
+  {
+    title: 'Chia sẽ sở thích ăn uống',
+    subtitle: 'Chia sẽ các địa điểm ăn ngon...',
+    illustration: require('../../assets/images/share.jpg')
   },
 ];
 
@@ -50,22 +40,27 @@ export default class OnbroadingScreen extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      sliderActiveSlide: SLIDER_FIRST_ITEM
+      sliderActiveSlide: 0
     };
   }
 
+  // Hàm xử lý khi nhấn nút tham gia ngay
   _onPressButton() {
     this.props.navigation.navigate('SignIn');
   }
 
-  _renderItemWithParallax ({item, index}, parallaxProps) {
+  // Hàm vẽ từng Item
+  _renderItem ({item, index}) {
     return (
-      <SliderEntry
-        data={item}
-        even={(index + 1) % 2 === 0}
-        parallax={true}
-        parallaxProps={parallaxProps}
-      />
+      <View style={styles.slide}>
+        <View>
+          <Image source={ item.illustration } style={styles.imageSlide} />
+        </View>
+        <View>
+          <Text style={styles.titleSlide}>{ item.title }</Text>
+          <Text style={styles.subtitleSlide}>{ item.subtitle }</Text>
+        </View>
+      </View>
     );
   }
 
@@ -75,28 +70,45 @@ export default class OnbroadingScreen extends Component {
       <>
         <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={'dark-content'}/>
         <View style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.titleHeader}>Bạn đang muốn</Text>
+          </View>
           <View style={styles.main}>
-            <Text style={styles.title}>Bạn đang muốn</Text>
             <Carousel
-              ref={c => this._slider1Ref = c}
+
+              ref={(c) => {this._slider1Ref = c;}}
+
+              // Required
               data={ENTRIES}
-              renderItem={this._renderItemWithParallax}
-              sliderWidth={sliderWidth}
-              itemWidth={itemWidth}
-              hasParallaxImages={true}
-              firstItem={SLIDER_FIRST_ITEM}
-              inactiveSlideScale={0.94}
-              inactiveSlideOpacity={0.7}
-              //inactiveSlideShift={20}
-              containerCustomStyle={styles.slider}
-              contentContainerCustomStyle={styles.sliderContentContainer}
+              renderItem={this._renderItem}
+              itemWidth={width*0.8}
+              sliderWidth={width}
+              //itemHeight={width*1.2}
+              //sliderHeight={width*1.2}
+
+              // Behavior
+              //hasParallaxImages={true}
+              //firstItem={SLIDER_FIRST_ITEM}
+
+              // Style and animation
+              activeSlideAlignment={'center'}
+
+              // Loop
               loop={true}
-              loopClonesPerSide={2}
+              loopClonesPerSide={3}
+
+              // Autoplay
               autoplay={true}
               autoplayDelay={1000}
               autoplayInterval={3000}
+
+              // Callbacks
               onSnapToItem={(index) => this.setState({ sliderActiveSlide: index }) }
+
             />
+          </View>
+          <View style={styles.footer}>
+            <View>
             <Pagination
               dotsLength={ENTRIES.length}
               activeDotIndex={sliderActiveSlide}
@@ -109,13 +121,14 @@ export default class OnbroadingScreen extends Component {
               carouselRef={this._slider1Ref}
               tappableDots={!!this._slider1Ref}
             />
-          </View>
-          <View style={styles.footer}>
-            <TouchableOpacity  onPress={this._onPressButton}>
+            </View>
+            <View>
+            <TouchableOpacity  onPress={() => this._onPressButton(this)}>
               <View style={styles.button}>
-                <Text style={styles.joinText}>Tham gia ngay!</Text>
+                <Text style={styles.textButton}>Tham gia ngay!</Text>
               </View>
             </TouchableOpacity>
+            </View>
           </View>
         </View>
       </>
@@ -124,64 +137,73 @@ export default class OnbroadingScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  // Layer
   container: {
-    alignItems: 'stretch',
     flex: 1,
     flexDirection: 'column',
     backgroundColor: 'white',
-    justifyContent: 'center',
+  },
+  header: {
+    flex: 1,
   },
   main: {
     alignItems: 'center',
-    flex: 8,
+    justifyContent: 'center',
+    flex: 6,
   },
   footer: {
     flex: 2,
-    flexDirection: 'column-reverse',
-    justifyContent: 'center',
-    alignContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
-  title: {
-    paddingTop: 40,
+  // Slide Item
+  slide: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageSlide: {
+    resizeMode: 'contain',
+    borderRadius: 4,
+    width: width*0.8,
+    height: width*0.8,
+  },
+  titleSlide: {
+    marginVertical: 20,
     color: 'green',
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: 'bold',
     textAlign: 'center'
   },
-  subtitle: {
-    marginTop: 5,
-    paddingHorizontal: 30,
-    backgroundColor: 'transparent',
-    color: 'rgba(255, 255, 255, 0.75)',
-    fontSize: 13,
+  subtitleSlide: {
+    color: 'gray',
+    fontSize: 14,
     fontStyle: 'italic',
     textAlign: 'center'
   },
-  slider: {
-    marginTop: 15,
-    overflow: 'visible' // for custom animations
+  // Title Header
+  titleHeader: {
+    paddingTop: 40,
+    color: 'green',
+    fontSize: 18,
+    textAlign: 'center'
   },
-  sliderContentContainer: {
-    paddingVertical: 10 // for custom animation
-  },
-  paginationContainer: {
-    paddingVertical: 8
-  },
+  // Pagination Dot
   paginationDot: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    marginHorizontal: 5
   },
+  // Button 'Tham gia ngay'
   button: {
     alignItems: 'center',
     backgroundColor: 'green',
     borderRadius: 6,
-    marginTop: width*0.1,
+    marginBottom: width*0.1,
     padding: 12,
     width: width*0.8,
   },
-  joinText: {
+  textButton: {
     color: 'white'
   },
 });

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { w, h, totalSize } from "../../api/Dimensions";
 import InputField from '../../components/login/InputField';
-import Firebase from '../../api/Firebase';
+//import Firebase from '../../api/Firebase';
 
 const email = require('../../assets/login/email.png');
 

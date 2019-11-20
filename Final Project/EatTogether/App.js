@@ -15,42 +15,13 @@ import SplashScreen from './src/screens/splash/SplashScreen';
 import OnbroadingScreen from './src/screens/onbroading/OnbroadingScreen';
 import SignInScreen from './src/screens/login/SignInScreen';
 import SignUpScreen from './src/screens/login/SignUpScreen';
-import ForgetPasswordScreen from './src/screens/login/ForgetPasswordScreen';
+//import ForgetPasswordScreen from './src/screens/login/ForgetPasswordScreen';
 
 import Home from './src/screens/home/Home';
 
 const AppNavigator = createBottomTabNavigator(
   {
-    Home: {
-      screen: Home,
-      navigationOptions: {
-        tabBarLabel: ({ tintColor }) => (
-          <Text style={{ fontSize: 10, color: tintColor }}>Home</Text>
-        ),
-        tabBarIcon: ({ horizontal, tintColor }) =>
-          <Icon name="home" size={20} color={tintColor} />
-      }
-    },
-    HighScores: {
-      screen: Home,
-      navigationOptions: {
-        tabBarLabel: ({ tintColor }) => (
-          <Text style={{ fontSize: 10, color: tintColor }}>HighScores</Text>
-        ),
-        tabBarIcon: ({ tintColor }) =>
-          <Icon name="chart-bar" size={20} color={tintColor} />
-      }
-    },
-    Settings: {
-      screen: Home,
-      navigationOptions: {
-        tabBarLabel: ({ tintColor }) => (
-          <Text style={{ fontSize: 10, color: tintColor }}>Settings</Text>
-        ),
-        tabBarIcon: ({ horizontal, tintColor }) =>
-          <Icon name="cogs" size={20} color={tintColor} />
-      }
-    }
+    Home: Home,
   },
   {
     tabBarOptions: {
@@ -65,7 +36,7 @@ const AuthStack = createStackNavigator(
     Onbroading: OnbroadingScreen,
     SignIn: SignInScreen,
     SignUp: SignUpScreen,
-    ForgetPassword: ForgetPasswordScreen,
+    //ForgetPassword: ForgetPasswordScreen,
   },
   {
     initialRouteName: 'Onbroading',

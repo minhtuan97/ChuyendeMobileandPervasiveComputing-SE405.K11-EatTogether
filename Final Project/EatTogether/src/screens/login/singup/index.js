@@ -4,7 +4,7 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {w, h, totalSize} from '../../api/Dimensions';
 import InputField from '../../components/login/InputField';
 import Continue from './Continue';
-import Firebase from "../../api/Firebase";
+//import Firebase from "../../api/Firebase";
 
 const email = require('../../assets/login/email.png');
 const password = require('../../assets/login/password.png');

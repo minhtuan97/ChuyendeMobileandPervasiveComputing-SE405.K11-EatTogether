@@ -6,6 +6,8 @@ import {
 } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class DetailsScreen extends React.Component {
   static navigationOptions = {
@@ -17,6 +19,11 @@ class DetailsScreen extends React.Component {
     headerTitleStyle: {
       fontWeight: 'bold',
     },
+    tabBarLabel: ({ tintColor }) => (
+      <Text style={{ fontSize: 10, color: tintColor }}>HighScores</Text>
+    ),
+    tabBarIcon: ({ tintColor }) =>
+      <Icon name="home" size={20} color={tintColor} />
   };
   render() {
     const { navigation } = this.props;
@@ -42,6 +49,11 @@ class DetailsScreen extends React.Component {
           title="Go back"
           onPress={() => this.props.navigation.goBack()}
         />   
+        <Button
+          title="log out"
+          onPress={() => {    AsyncStorage.clear();
+                              this.props.navigation.navigate('Splash');}}
+        />  
       </View>
     );
   }
