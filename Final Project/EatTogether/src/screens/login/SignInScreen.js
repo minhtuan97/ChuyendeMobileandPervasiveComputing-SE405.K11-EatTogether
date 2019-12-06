@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
-import {
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Dimensions,
-  TextInput,
-  Image,
-  ImageBackground,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  StatusBar,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import { StyleSheet, View, TouchableOpacity, Text, Image, ImageBackground, Alert} from 'react-native';
+import InputField from "../../components/login/InputField";
+import {w, h, totalSize} from '../../api/Dimensions';
+import fire from '../../api/FirebaseConfig'
+import GetStarted from '../login/login/GetStarted';
+import firebaseSDK from '../../utils/firebaseSDK';
+
+const companyLogo = require('../../assets/login/companylogo.png');
+const email = require('../../assets/login/email.png');
+const password = require('../../assets/login/password.png');
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class SignInScreen extends Component {
@@ -29,183 +25,157 @@ export default class SignInScreen extends Component {
       password: '', 
       errorMessage: null,
       hidden: true,
+      isEmailCorrect: false,
+      isPasswordCorrect: false,
     }
-    //AsyncStorage.setItem('userToken', 'abc');
-    //this.props.navigation.navigate('App');
-    //this._signOutAsync();
   }
 
   // Xử lý đăng nhập
-  handleSignUp = () => {
-    this.setState(() =>{isLogin: true;});
-    // TODO: Firebase stuff...
-
-    this.props.navigation.navigate('App');
-    console.log('handleSignUp');
+  handleSignIn = () => {
+    const email = this.email.getInputValue();
+    const password = this.password.getInputValue()
+    this.Login(email,password);
   }
+  Login = (email, password) => {
+      fire.auth().signInWithEmailAndPassword(email, password)
+      .then(()=>{
+        Alert.alert(
+          'Login',
+          'Đăng nhập thành công',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+            {text: 'OK', onPress:() => this.props.navigation.navigate('App')},
+          ],
+          {cancelable: false},
+        )
+      }
+                   
+      )
+      .catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // ...
+          Alert.alert(
+              'Lỗi '+ errorMessage,
+            )
+        });
+  };
 
   render() {
     return (
       <>
-        <StatusBar barStyle='dark-content' translucent={true} backgroundColor='transparent'/>
+      
         <View style={styles.container}>
+          <Image style={styles.icon} resizeMode="contain" source={companyLogo} />
+          <InputField
+            placeholder="Email"
+            keyboardType="email-address"
+            style={styles.email}
+            error={this.state.isEmailCorrect}
+            focus={this.changeInputFocus}
+            ref={ref => this.email = ref}
+            icon={email}
+            //onChangeText={(email) => this.setState({ email : email })}
+            
+          />
+          <InputField
+            placeholder="Password"
+            returnKeyType="done"
+            secureTextEntry={true}
+            blurOnSubmit={true}
+            error={this.state.isPasswordCorrect}
+            ref={ref => this.password = ref}
+            focus={this.changeInputFocus}
+            icon={password}
+          />
 
-          <View style={styles.header}>
-            <Text style={styles.titleHeader}>Tham gia ngay!</Text>
-            <Image source={require('../../assets/logo/share.png')} style={styles.logo} />
-            <Text style={styles.titleApp}>Eat Together</Text>
+          <View>
+            <TouchableOpacity
+              onPress={()=>this.handleSignIn(this)}
+              style={styles.button}
+              activeOpacity={0.6}
+              
+            >
+              <Text style={styles.text}>LOGIN</Text>
+            </TouchableOpacity>
           </View>
 
-          <View style={styles.main}>
-            {/* Thông báo lỗi */}
-            {this.state.errorMessage && 
-             <Text style={styles.errorText}>
-               {this.state.errorMessage}
-             </Text>
-            }
-            <View style={styles.username}>
-              <Icon name='user' size={20} color='black'/>
-              <TextInput
-                autoCapitalize="none"
-                style={styles.usernameTextInput}
-                placeholder="Tên tài khoản"
-                onChangeText={(text) => this.setState({text})}
-                value={this.state.text}
-              />
-            </View>
-            <View style={styles.password}>
-              <Icon name='lock' size={20} color='black'/>
-              <TextInput
-                secureTextEntry={this.state.hidden}
-                autoCapitalize="none"
-                style={styles.passwordTextInput}
-                placeholder="Mật khẩu"
-                onChangeText={(password) => this.setState({password})}
-                value={this.state.password}
-              />
-              <TouchableOpacity onPress={ () => ( this.setState(previousState => (
-                                                    { hidden: !previousState.hidden }
-                                                  ))
-                                                ) }
-              >
-                { this.state.hidden ? <Icon name='eye' size={20} color='black'/>
-                  : <Icon name='eye-slash' size={20} color='black'/>
-                }
-              </TouchableOpacity>
-            </View>
-            <View>
-              <TouchableOpacity  onPress={this.handleSignUp}> 
-                <View style={styles.button}>
-                {this.state.isLogin
-                  ? <ActivityIndicator size="large" style={styles.spinner} color='white' />
-                  : <Text style={styles.textButton}>Đăng nhập</Text>}
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View> 
-
-          <View style={styles.footer}>
-            <TouchableOpacity  onPress={() => this.props.navigation.navigate('SignUp')}> 
-              <View style={styles.button}>
-                <Text style={styles.textButton}>Tạo tài khoản</Text>
-              </View>
+          <View style={styles.textContainer}>
+            <TouchableOpacity
+             //onPress={this.props.change('register')} 
+              style={styles.touchable} activeOpacity={0.6}>
+              <Text style={styles.createAccount}>Create Account</Text>
             </TouchableOpacity>
-            <TouchableOpacity  onPress={() => this.props.navigation.navigate('ForgetPassword')}> 
-              <View style={styles.button}>
-                <Text style={styles.textButton}>Quên mật khẩu</Text>
-              </View>
+            <TouchableOpacity
+              // onPress={this.props.change('forgot')} 
+              style={styles.touchable} activeOpacity={0.6}>
+              <Text style={styles.forgotPassword}>Forgot Password</Text>
             </TouchableOpacity>
           </View>
         </View>
+        
       </>
     );
   }
 };
 
-const { width } = Dimensions.get('window');
-
 const styles = StyleSheet.create({
-  // Layer
   container: {
-    backgroundColor: 'white',
+    flex: 1,
+    alignItems: 'center',
+  },
+  icon: {
+    width: w(70),
+    height: h(30),
+    marginTop: h(10),
+    marginBottom: h(7),
+  },
+  textContainer: {
+    width: w(100),
+    flexDirection: 'row',
+    marginTop: h(5),
+  },
+  email: {
+    marginBottom: h(4.5),
+  },
+  touchable: {
     flex: 1,
   },
-  header: {
-    backgroundColor: 'blue',
-    flex: 4,
-    justifyContent: 'center',
+  createAccount: {
+    //color:'#ffffffEE',
+    textAlign: 'center',
+    fontSize: totalSize(2),
+    fontWeight: '600',
   },
-  main: {
-    flex: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
+  forgotPassword: {
+    //color:'#ffffffEE',
+    textAlign: 'center',
+    fontSize: totalSize(2),
+    fontWeight: '600',
   },
-  footer: {
-    backgroundColor: 'red',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    fontWeight: 'bold'
-  },
-  //
-  logo: {
-    width: width*0.2,
-    height: width*0.2,
-    margin: 10,
-  },
-  titleHeader: {
-    color: 'green',
-    marginLeft: 10,
-  },
-  titleApp: {
-    color: 'green',
-    fontSize: width*0.1,
-    marginLeft: 10,
-  },
-
-
-  // Input
-  username: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 40 , 
-    borderWidth: 1, 
-    borderRadius: 16, 
-    padding: 10, 
-    width: width*0.9
-  },
-  password: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 40 , 
-    borderWidth: 1, 
-    borderRadius: 16, 
-    padding: 10, 
-    width: width*0.9
-  },
-  usernameTextInput: {
-    height: 40,
-  },
-  passwordTextInput: {
-    height: 40,
-  },
-  signin: {
-    backgroundColor: 'green',
-    borderRadius: 16,
-  },
-  signinText: {
-
-  },
-  signinButton: {
-    backgroundColor: 'green',
-    borderRadius: 16,
-  },
-  //
   button: {
-    margin: 20,
-  }
+    width: '85%',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: w(2),
+    backgroundColor: '#888',
+    borderRadius: w(10),
+    marginTop: h(8),
+  },
+  text: {
+    color: 'green',
+    fontWeight: '700',
+    paddingVertical: h(1),
+    fontSize: totalSize(2.1),
+  },
+  spinner: {
+    height: h(5),
+  },
 });
  

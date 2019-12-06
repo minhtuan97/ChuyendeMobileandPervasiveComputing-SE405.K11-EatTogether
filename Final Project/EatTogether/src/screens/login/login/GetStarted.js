@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, ActivityIndicator, Text, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
-import {w, h, totalSize} from '../../api/Dimensions';
+import {w, h, totalSize} from '../../../../src/api/Dimensions';
 
 export default class GetStarted extends Component {
   render() {
@@ -13,7 +13,7 @@ export default class GetStarted extends Component {
       >
         {this.props.isLogin
           ? <ActivityIndicator size="large" style={styles.spinner} color='white' />
-          : <Text style={styles.text}>GET STARTED</Text>}
+          : <Text style={styles.text}>LOGIN</Text>}
       </TouchableOpacity>
     );
   }
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     marginTop: h(8),
   },
   text: {
-    color: 'white',
+    color: 'green',
     fontWeight: '700',
     paddingVertical: h(1),
     fontSize: totalSize(2.1),

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Image, TextInput} from 'react-native';
-import {w, h, totalSize} from '../../api/Dimensions';
+import {w, h, totalSize} from '../../../src/api/Dimensions';
 
-const close = require('../../assets/login/close.png');
+const close = require('../../../src/assets/login/close.png');
 
 export default class InputField extends Component {
   state = {
@@ -29,7 +29,7 @@ export default class InputField extends Component {
           returnKeyType={this.props.returnKeyType}
           placeholder={this.props.placeholder}
           onSubmitEditing={this.props.focus(this.props.placeholder)}
-          placeholderTextColor="#ffffffDD"
+          //placeholderTextColor="#ffffffDD"
           onChangeText={(text) => this.setState({ text })}
         />
         {this.props.error && <Image style={styles.iconError} source={close}/>}
@@ -52,7 +52,7 @@ InputField.defaultProps = {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff44',
+    //backgroundColor: '#ffffff44',
     flexDirection: 'row',
     paddingVertical: w(3.4),
     borderRadius: w(10),
@@ -61,12 +61,12 @@ const styles = StyleSheet.create({
     width: '85%',
   },
   containerError: {
-    backgroundColor: '#EF9A9A88',
+    //backgroundColor: '#EF9A9A88',
     borderWidth: 1,
     borderColor: '#E57373',
   },
   inputText: {
-    color: 'white',
+    //color: 'white',
     flex: 1,
     fontSize: totalSize(2.1),
     marginLeft: w(3),

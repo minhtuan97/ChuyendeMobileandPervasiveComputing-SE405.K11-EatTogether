@@ -68,7 +68,7 @@ export default class OnbroadingScreen extends Component {
     const { sliderActiveSlide } = this.state;
     return (
       <>
-        <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={'dark-content'}/>
+        {/* <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={'dark-content'}/> */}
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.titleHeader}>Bạn đang muốn</Text>

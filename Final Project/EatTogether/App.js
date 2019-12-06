@@ -17,11 +17,17 @@ import SignInScreen from './src/screens/login/SignInScreen';
 import SignUpScreen from './src/screens/login/SignUpScreen';
 //import ForgetPasswordScreen from './src/screens/login/ForgetPasswordScreen';
 
+//import Login from './src/screens/login/login/index'
+
 import Home from './src/screens/home/Home';
 
 const AppNavigator = createBottomTabNavigator(
   {
     Home: Home,
+    Home1: OnbroadingScreen,
+    //Home2: AuthStack,
+    
+
   },
   {
     tabBarOptions: {
@@ -48,6 +54,7 @@ const InitialNavigator = createSwitchNavigator(
     Splash: SplashScreen,
     Auth: AuthStack,
     App: AppNavigator,
+    
   },
   {
     initialRouteName: 'Splash',

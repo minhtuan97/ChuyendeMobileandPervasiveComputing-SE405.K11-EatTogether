@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Image} from 'react-native';
-import InputField from "../../components/login/InputField";
-import {w, h, totalSize} from '../../api/Dimensions';
+import InputField from "../../../../src/components/login/InputField";
+import {w, h, totalSize} from '../../../../src/api/Dimensions';
 import GetStarted from './GetStarted';
 import Firebase from '../../api/Firebase';
 
-const companyLogo = require('../../assets/login/companylogo.png');
-const email = require('../../assets/login/email.png');
-const password = require('../../assets/login//password.png');
+const companyLogo = require('../../../src/assets/login/companylogo.png');
+const email = require('../../../src/assets/login/email.png');
+const password = require('../../../src/assets/login/password.png');
 
 export default class Login extends Component {
 

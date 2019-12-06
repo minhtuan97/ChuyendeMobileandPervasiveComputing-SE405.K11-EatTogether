@@ -1,4 +1,6 @@
 import firebase from 'firebase';
+import React, { Component } from 'react';
+import { Alert} from 'react-native';
 
 const configMinhTuan = {
   apiKey: "AIzaSyAFw1N1TprRQAAqDzuhwHA4sBlXBk1ejiQ",
@@ -27,31 +29,62 @@ class FirebaseSDK {
   constructor() {
     if (!firebase.apps.length) {
       //avoid re-initializing
-      firebase.initializeApp(configSiVai);
+      firebase.initializeApp(configMinhTuan);
     }
   }
 
   userLogin = (email, password) => {
     return new Promise(resolve => {
       firebase.auth().signInWithEmailAndPassword(email, password)
-        .catch(error => {
-          switch (error.code) {
-            case 'auth/invalid-email':
-              console.warn('Invalid email address format.');
-              break;
-            case 'auth/user-not-found':
-            case 'auth/wrong-password':
-              console.warn('Invalid email address or password');
-              break;
-            default:
-              console.warn('Check your internet connection');
-          }
-          resolve(null);
-        }).then(user => {
-        if (user) {
-          resolve(user);
+      firebase.auth().signInWithEmailAndPassword(email, password)
+      .catch(error => {
+        switch (error.code) {
+          case 'auth/invalid-email':
+            //console.warn('Invalid email address format.');
+            Alert.alert('Invalid email address format.');
+            break;
+          case 'auth/user-not-found':
+          case 'auth/wrong-password':
+            //console.warn('Invalid email address or password');
+            Alert.alert('Invalid email address or password');
+            break;
+          default:
+            //console.warn('Check your internet connection');
+            Alert.alert('Check your internet connection');
         }
-      });
+        resolve(null);
+      }).then(user => {
+      if (user) {
+        resolve(user);
+      }
+    });
+        // .catch(function(error) {
+        //   // Handle Errors here.
+        //   var errorCode = error.code;
+        //   var errorMessage = error.message;
+        //   // ...
+        //   Alert.alert(
+        //       'Lỗi '+ errorMessage,
+        //     )
+        // }).then(
+        //   Alert.alert(
+        //     'Login',
+        //     'Đăng nhập thành công',
+        //     [
+        //       {
+        //         text: 'Cancel',
+        //         onPress: () => console.log('Cancel Pressed'),
+        //         style: 'cancel',
+        //       },
+        //       {text: 'OK',},
+        //     ],
+        //     {cancelable: false},
+        //   )
+        //   user => {
+        // if (user) {
+        //   resolve(user);
+        // }
+      //}
     })
   };
 
