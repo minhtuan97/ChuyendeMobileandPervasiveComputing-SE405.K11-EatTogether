@@ -28,6 +28,7 @@ export default class InputField extends Component {
           keyboardType={this.props.keyboardType}
           returnKeyType={this.props.returnKeyType}
           placeholder={this.props.placeholder}
+          placeholderTextColor={'white'}
           onSubmitEditing={this.props.focus(this.props.placeholder)}
           //placeholderTextColor="#ffffffDD"
           onChangeText={(text) => this.setState({ text })}
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     borderColor: '#E57373',
   },
   inputText: {
-    //color: 'white',
+    color: 'white',
     flex: 1,
     fontSize: totalSize(2.1),
     marginLeft: w(3),

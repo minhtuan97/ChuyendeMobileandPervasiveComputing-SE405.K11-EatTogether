@@ -33,6 +33,7 @@ const ENTRIES = [
 
 export default class OnbroadingScreen extends Component {
   
+  // Ẩn header
   static navigationOptions = {
     header: null
   }
@@ -68,7 +69,7 @@ export default class OnbroadingScreen extends Component {
     const { sliderActiveSlide } = this.state;
     return (
       <>
-        {/* <StatusBar translucent={true} backgroundColor={'transparent'} barStyle={'dark-content'}/> */}
+        <StatusBar backgroundColor={'green'} barStyle={'light-content'}/>
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.titleHeader}>Bạn đang muốn</Text>
@@ -145,6 +146,8 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   main: {
     alignItems: 'center',
@@ -183,7 +186,6 @@ const styles = StyleSheet.create({
   },
   // Title Header
   titleHeader: {
-    paddingTop: 40,
     color: 'green',
     fontSize: 18,
     textAlign: 'center'

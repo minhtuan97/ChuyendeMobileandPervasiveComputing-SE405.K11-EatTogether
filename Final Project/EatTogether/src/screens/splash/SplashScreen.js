@@ -15,7 +15,6 @@ export default class SplashScreen extends Component {
 
   constructor(props) {
     super(props);
-    //this._signOutAsync();
   }
 
   // hàm đăng nhập: lưu AsyncStorage: userToken và chuyển đến AppNavigation
@@ -32,7 +31,7 @@ export default class SplashScreen extends Component {
 
   // Lấy  userToken từ AsyncStorage sau đó chuyển hướng đến App hoặc Auth
   _bootstrapAsync = async () => {
-    const userToken = await AsyncStorage.getItem('userToken');
+    const userToken = await AsyncStorage.getItem('email');
 
     // Chuyển đổi sang AppNavigator hoặc AuthNavigator
     // screen will be unmounted and thrown away.
@@ -44,7 +43,7 @@ export default class SplashScreen extends Component {
     return new Promise((resolve) =>
       setTimeout(
         () => { resolve('result') },
-        2000
+        1000
       )
     )
   }
@@ -63,7 +62,7 @@ export default class SplashScreen extends Component {
   render() {
     return (
       <>
-        {/* <StatusBar barStyle='dark-content' translucent={true} backgroundColor='transparent'/> */}
+        <StatusBar backgroundColor={'green'} barStyle={'light-content'}/> 
         <ImageBackground source={require('../../assets/images/bg03.jpg')} style={styles.imageBackground}>
           <View style={styles.header}>
             <Image source={require('../../assets/logo/share.png')} style={styles.logo} />

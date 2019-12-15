@@ -62,11 +62,45 @@ class DetailsScreen extends React.Component {
 class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'Home',
+    tabBarIcon: ({ tintColor }) =>
+    <Icon name="home" size={20} color={'red'} />
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      email : '11',
+      password: '33', 
+    }
+  }
+  // Lấy dữ liệu từ AsyncStorage
+  _retrieveData = async () => {
+    try {
+      const email = await AsyncStorage.getItem('email');
+      const password = await AsyncStorage.getItem('password');
+      if (email !== null && password !== null) {
+        // We have data!!
+        this.setState({
+          email,
+          password
+        })
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
+
+  componentWillMount() {
+    this._retrieveData();
+  }
+
+
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Home Screen</Text>
+        <Text>{this.state.email}</Text>
+        <Text>{this.state.password}</Text>
         <Button
           title="Go to Details"
           onPress={() => this.props.navigation.navigate('Details', {

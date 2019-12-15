@@ -1,73 +1,13 @@
-// import React, { Component } from 'react';
-// import {
-//   ActivityIndicator,
-//   Dimensions,
-//   ImageBackground,
-//   StyleSheet,
-//   View,
-//   Text,
-//   StatusBar,
-// } from 'react-native';
-
-// export default class SignUpScreen extends Component {
-
-//   static navigationOptions = {
-//     title: 'Tạo tài khoản'
-//   }
-  
-//   render() {
-//     return (
-//       <>
-//         <StatusBar barStyle='dark-content' translucent={true} backgroundColor='transparent'/>
-//         <ImageBackground source={require('../../assets/images/bg03.jpg')} style={styles.imageBackground}>
-//           <View style={styles.header}>
-//             <Text style={styles.appTitle}>Sign Up</Text>
-//             <ActivityIndicator animating={true} color='green' size='small' style={styles.activityIndicator}/>
-//           </View>
-//           <View style={styles.main}></View>
-//           <View style={styles.footer}>
-//             <Text>2019 &copy; SiVai MinhTuan</Text>
-//           </View>
-//         </ImageBackground>
-//       </>
-//     );
-//   }
-// };
-
-// const { width } = Dimensions.get('window');
-
-// const styles = StyleSheet.create({
-//   activityIndicator: {
-//     marginTop: 50,
-//   },
-//   imageBackground: {
-//     flex: 1,
-//     alignItems: 'center',
-//   },
-//   logo: {
-//     width: width*0.1,
-//     height: width*0.1,
-//   },
-//   appTitle: {
-//     color: 'green',
-//     fontSize: width*0.13,
-//   },
-//   header: {
-//     flex: 6,
-//     justifyContent: 'center',
-//   },
-//   main: {
-//     flex: 3,
-//   },
-//   footer: {
-//     flex: 1,
-//     justifyContent: 'center',
-//   },
-// });
- 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
+import {
+  View, 
+  Text, 
+  StyleSheet, 
+  TouchableOpacity, 
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import {w, h, totalSize} from '../../api/Dimensions';
 import InputField from '../../components/login/InputField';
 import fire from "../../api/FirebaseConfig";
@@ -88,6 +28,7 @@ export default class SignUpScreen extends Component {
     isPasswordCorrect: false,
     isRepeatCorrect: false,
     isCreatingAccount: false,
+    isCreating: false,
   };
 
   handleSignIn = () => {
@@ -110,41 +51,33 @@ export default class SignUpScreen extends Component {
     })
   };
 
-  createFireBaseAccount = (email, password) => {
-    this.setState({ isCreatingAccount: true });
-    fire.auth().createUserWithEmailAndPassword(email, password)
-        .then(()=>{
-          Alert.alert(
-            'Đăng ký',
-            'Đăng ký tài khoản thành công',
-            [
-              {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
-              },
-              {text: 'OK', 
-              //onPress:()=> this.props.navigation.navigate('Login')
+  createFireBaseAccount = async (email, password) => {
+    this.setState({ isCreating: true });
+    await fire.auth().createUserWithEmailAndPassword(email, password)
+      .then(()=>{
+        Alert.alert(
+          'Đăng ký',
+          'Đăng ký tài khoản thành công',
+          [
+            {
+              text: 'OK', 
+              onPress:()=> this.props.navigation.navigate('SinIn')
             },
-            ],
-            {cancelable: false},
-          )
-        }
-            // this.setState({
-            //     //username:'',
-            //    // pass:'',
-            // }),
-            
+          ],
+          {cancelable: false},
         )
-        .catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // ...
-            Alert.alert(
-                'Lỗi '+ errorMessage,
-              )
-          });
+      }
+          
+      ).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+        Alert.alert(
+          'Lỗi '+ errorMessage,
+          )
+      });
+    this.setState({ isCreating: false });
   };
 
   changeInputFocus = name => () => {
@@ -165,14 +98,14 @@ export default class SignUpScreen extends Component {
         break;
       default:
         this.setState({ isRepeatCorrect: (this.repeat.getInputValue() === ''
-            || this.repeat.getInputValue() !== this.password.getInputValue()) });
+          || this.repeat.getInputValue() !== this.password.getInputValue()) });
     }
   };
 
   render() {
     return(
       <View style={styles.container}>
-        <Text style={styles.create}>CREATE ACCOUNT</Text>
+        <Text style={styles.create}>Nhập thông tin tài khoản</Text>
         {/* <InputField
           placeholder="Name"
           autoCapitalize="words"
@@ -186,24 +119,24 @@ export default class SignUpScreen extends Component {
           placeholder="Email"
           keyboardType="email-address"
           error={this.state.isEmailCorrect}
-          style={styles.input}
+          style={styles.inputField}
           focus={this.changeInputFocus}
           ref={ref => this.email = ref}
           icon={email}
         />
         <InputField
-          placeholder="Password"
+          placeholder="Mật khẩu"
           error={this.state.isPasswordCorrect}
-          style={styles.input}
+          style={styles.inputField}
           focus={this.changeInputFocus}
           ref={ref => this.password = ref}
           secureTextEntry={true}
           icon={password}
         />
         <InputField
-          placeholder="Repeat Password"
+          placeholder="Nhập lại mật khẩu"
           error={this.state.isRepeatCorrect}
-          style={styles.input}
+          style={styles.inputField}
           secureTextEntry={true}
           returnKeyType="done"
           blurOnSubmit={true}
@@ -213,18 +146,13 @@ export default class SignUpScreen extends Component {
         />
         
         <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={()=>this.handleSignIn(this)}
-        style={styles.button}>
-        {this.props.isCreating
-        ? <ActivityIndicator size="large" style={styles.spinner} color='white' />
-        : <Text style={styles.text}>Continue</Text>}
-        </TouchableOpacity>
-
-        <TouchableOpacity 
-        // onPress={this.props.change('login')} 
-        style={styles.touchable}>
-          <Text style={styles.signIn}>{'<'} Sign In</Text>
+          disabled={this.state.isCreating}
+          activeOpacity={0.5}
+          onPress={()=>this.handleSignIn(this)}
+          style={styles.button}>
+          {this.state.isCreating
+          ? <ActivityIndicator size="large" style={styles.spinner} color='white' />
+          : <Text style={styles.text}>Tạo tài khoản</Text>}
         </TouchableOpacity>
       </View>
     )
@@ -258,7 +186,9 @@ const styles = StyleSheet.create({
     marginLeft: w(8),
     marginTop: h(4),
   },
-  input: {
+  inputField: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.2)',
     marginVertical: h(2),
   },
   button: {
@@ -266,7 +196,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'transparent',
+    backgroundColor: 'green',
     paddingVertical: w(2),
     borderRadius: w(10),
     borderColor: '#E0E0E0',
@@ -277,7 +207,7 @@ const styles = StyleSheet.create({
     height: h(5),
   },
   text: {
-    //color: 'white',
+    color: 'white',
     fontWeight: '600',
     paddingVertical: h(1),
     fontSize: totalSize(2.2),

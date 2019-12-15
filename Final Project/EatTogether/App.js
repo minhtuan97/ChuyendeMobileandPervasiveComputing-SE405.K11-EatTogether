@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from 'react-native';
 import {
   createSwitchNavigator,
   createAppContainer
@@ -11,23 +10,18 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducers from './src/reducers';
 
+import AuthStack from './src/screens/login/LoginNavigator';
 import SplashScreen from './src/screens/splash/SplashScreen';
-import OnbroadingScreen from './src/screens/onbroading/OnbroadingScreen';
-import SignInScreen from './src/screens/login/SignInScreen';
-import SignUpScreen from './src/screens/login/SignUpScreen';
-//import ForgetPasswordScreen from './src/screens/login/ForgetPasswordScreen';
-
-//import Login from './src/screens/login/login/index'
+import Chat from './src/screens/chat/ChatHomeScreen';
+//import Chat1 from './src/screens/chat/Chat1';
 
 import Home from './src/screens/home/Home';
 
 const AppNavigator = createBottomTabNavigator(
   {
     Home: Home,
-    Home1: OnbroadingScreen,
-    //Home2: AuthStack,
-    
-
+    Chat: Chat,
+    //Chat1: Chat1,
   },
   {
     tabBarOptions: {
@@ -35,18 +29,6 @@ const AppNavigator = createBottomTabNavigator(
       inactiveTintColor: 'gray'
     }
   }
-);
-
-const AuthStack = createStackNavigator(
-  { 
-    Onbroading: OnbroadingScreen,
-    SignIn: SignInScreen,
-    SignUp: SignUpScreen,
-    //ForgetPassword: ForgetPasswordScreen,
-  },
-  {
-    initialRouteName: 'Onbroading',
-  }  
 );
 
 const InitialNavigator = createSwitchNavigator(
@@ -63,7 +45,7 @@ const InitialNavigator = createSwitchNavigator(
 
 const AppContainer = createAppContainer(InitialNavigator);
 
-class App extends React.Component {
+export default class App extends React.Component {
   render() {
     return (
       <Provider store={createStore(reducers)}>
@@ -72,5 +54,3 @@ class App extends React.Component {
     );
   }
 }
-
-export default App;
