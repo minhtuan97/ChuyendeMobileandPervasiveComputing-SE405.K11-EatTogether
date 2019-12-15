@@ -3,7 +3,6 @@ import {
   createSwitchNavigator,
   createAppContainer
 } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Provider } from 'react-redux';
@@ -12,20 +11,41 @@ import reducers from './src/reducers';
 
 import AuthStack from './src/screens/login/LoginNavigator';
 import SplashScreen from './src/screens/splash/SplashScreen';
-import Chat from './src/screens/chat/ChatHomeScreen';
-//import Chat1 from './src/screens/chat/Chat1';
+import ChatNavigator from './src/screens/chat/ChatNavigator';
+import NotificationNavigator from './src/screens/notification/NotificationNavigator';
+import BlogNavigator from './src/screens/blog/BlogNavigator';
 
 import Home from './src/screens/home/Home';
 
 const AppNavigator = createBottomTabNavigator(
   {
-    Home: Home,
-    Chat: Chat,
-    //Chat1: Chat1,
+    'Hồ sơ': ChatNavigator,
+    'Trò chuyện': ChatNavigator,
+    'Trang chủ': Home,
+    'Blog': BlogNavigator,
+    'Thông báo': NotificationNavigator,
   },
   {
+    initialRouteName : 'Trang chủ',
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ tintColor }) => {
+        const { routeName } = navigation.state;
+        let iconName;
+        switch(routeName)
+        {
+          case 'Trang chủ': iconName = 'home'; break;
+          case 'Trò chuyện': iconName = 'comment-alt'; break;
+          case 'Thông báo': iconName = 'bell'; break;
+          case 'Blog': iconName = 'feather-alt'; break;
+          case 'Hồ sơ': iconName = 'user'; break;
+        }
+        // You can return any component that you like here! We usually use an
+        // icon component from react-native-vector-icons
+        return <Icon name={iconName} size={20} color={tintColor} />;
+      },
+    }),
     tabBarOptions: {
-      activeTintColor: 'orange',
+      activeTintColor: 'green',
       inactiveTintColor: 'gray'
     }
   }
@@ -35,8 +55,7 @@ const InitialNavigator = createSwitchNavigator(
   {
     Splash: SplashScreen,
     Auth: AuthStack,
-    App: AppNavigator,
-    
+    App: AppNavigator,   
   },
   {
     initialRouteName: 'Splash',

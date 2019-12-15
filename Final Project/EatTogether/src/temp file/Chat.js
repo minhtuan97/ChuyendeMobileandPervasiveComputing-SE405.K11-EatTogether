@@ -21,7 +21,6 @@ export default class Chat extends Component {
         <View>
           <Text style={styles.title}>tìm kiếm</Text>
         </View>
-        // List chat people
         <FlatList
           ref={"flatList"}
           data={ data }

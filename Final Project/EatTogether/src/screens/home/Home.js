@@ -61,9 +61,7 @@ class DetailsScreen extends React.Component {
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
-    title: 'Home',
-    tabBarIcon: ({ tintColor }) =>
-    <Icon name="home" size={20} color={'red'} />
+    title: 'Trang chủ',
   };
 
   constructor(props) {
@@ -90,7 +88,7 @@ class HomeScreen extends React.Component {
     }
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this._retrieveData();
   }
 
