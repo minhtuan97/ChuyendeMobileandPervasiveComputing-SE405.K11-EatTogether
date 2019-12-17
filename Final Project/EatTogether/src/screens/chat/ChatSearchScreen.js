@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   inputSearchArea: {
-    marginLeft: 10,
+    //marginLeft: 10,
   },
   TextInputSearch: {
     //color: 'red',

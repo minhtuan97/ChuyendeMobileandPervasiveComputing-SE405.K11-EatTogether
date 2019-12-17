@@ -1,27 +1,21 @@
 import React, { Component } from 'react';
 import {
-  Animated,
   Dimensions,
   Image,
   StyleSheet,
   Text,
   TouchableOpacity,
-  TouchableHighlight,
   View,
-  FlatList,
-  Button,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-// Thẻ từng người trong danh sách chat
+// Thẻ từng bài đăng Blog
 export default class BlogItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeRowKey: null, //set item active
-      numberOfRefresh: 0,
-      isRightOpen: false
+      isLiked: true,
     };
   }
 
@@ -53,7 +47,7 @@ export default class BlogItem extends Component {
             </View>
           </View>
           <View style={styles.option}>
-            <Icon name='ellipsis-v' size={20} color={'grey'}/>
+            <Icon name='ellipsis-v' size={16} color={'grey'}/>
           </View>
         </View>
         <View style={styles.main}>
@@ -70,11 +64,20 @@ export default class BlogItem extends Component {
           }
         </View>
         <View style={styles.footer}>
-          <View style={styles.likeIcon}>
-            <Icon name='heart' color='pink' size={20} solid />
-          </View>
+          <TouchableOpacity 
+            style={styles.likeIcon}
+            onPress={() => this.setState(previousState => (
+              { isLiked: !previousState.isLiked }
+            ))}
+          >
+            { this.state.isLiked ? (
+              <Icon name='heart' color='pink' size={20} solid />
+            ) : (
+              <Icon name='heart' color='pink' size={20}/>
+            )}
+          </TouchableOpacity>
           <View style={styles.likeCount}>
-            <Text style={styles.likeCountText}>{item.like}</Text>
+            <Text style={styles.likeCountText}>{item.like} Lượt thích</Text>
           </View>
         </View>
       </View>   
@@ -82,18 +85,13 @@ export default class BlogItem extends Component {
   }
 }
 
-
 const {height, width} = Dimensions.get('window')
 
 const styles = StyleSheet.create({
   wraper: {
     flex: 1,
-    width: width,
-    alignItems: 'stretch',
-    marginVertical: 10,
-    borderRadius: 8,
-    borderTopWidth: 1,
     backgroundColor: 'white',
+    marginBottom: 16,
   },
   header: {
     flexDirection: 'row', 
@@ -103,39 +101,18 @@ const styles = StyleSheet.create({
   main: {
 
   },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    padding: 10,
-    //borderTopWidth: 1,
-  },
   avatarImg: {
-    width: width*15/100,
-    height: width*15/100,
-    borderRadius: width*10/100,
+    width: width*0.12,
+    height: width*0.12,
+    borderRadius: width*0.06,
     margin: 4,
   },
   img: {
     width: width,
-    height: 320,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'black',
-    padding: 20
+    height: width,
   },
   option: {
     flex: 1,
-  },
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  }, 
-  bgAvatar: {
-    flex: 2
   },
   nameAndTime: {
     flex: 8,
@@ -146,11 +123,15 @@ const styles = StyleSheet.create({
   name: {
 
   },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 10,
+  },
   nameText: {
     fontWeight: 'bold',
     color: 'black',
     fontSize: 16,
-    //paddingBottom: 3
   },
   time: {
 
@@ -163,12 +144,12 @@ const styles = StyleSheet.create({
   },
   statusText: {
     padding: 20,
-    //color: 'red',
   },
   likeIcon: {
     marginHorizontal: 5,
   },
   likeCountText: {
+    fontWeight: 'bold',
     marginHorizontal: 5,
   },
 })

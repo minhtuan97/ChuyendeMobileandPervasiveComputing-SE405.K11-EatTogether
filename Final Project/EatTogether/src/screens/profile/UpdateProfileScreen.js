@@ -9,7 +9,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-community/async-storage';
 
-export default class DetailsScreen extends React.Component {
+export default class UpdateProfileScreen extends React.Component {
   static navigationOptions = {
     title: 'Details',
     headerStyle: {

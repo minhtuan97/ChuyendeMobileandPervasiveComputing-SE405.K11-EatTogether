@@ -9,9 +9,9 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-community/async-storage';
 
-export default class UpdateProfileScreen extends React.Component {
+export default class ProfileHomeScreen extends React.Component {
   static navigationOptions = {
-    title: 'Details',
+    title: 'Hồ sơ',
     headerStyle: {
       backgroundColor: '#f4511e',
     },
@@ -30,9 +30,13 @@ export default class UpdateProfileScreen extends React.Component {
           {JSON.stringify(navigation.getParam('otherParam', 'default value'))}
         </Text>
         <Button
-          title="Go to Details Update again"
-          onPress={() => this.props.navigation.push('ProfileUpdate')}
-        />       
+          title="Cập nhập hồ sơ"
+          onPress={() => this.props.navigation.navigate('ProfileUpdate')}
+        />    
+        <Button
+          title="Tạo hồ sơ"
+          onPress={() => this.props.navigation.navigate('ProfileCreate')}
+        />    
         <Button
           title="Đăng xuất"
           onPress={() => {    
