@@ -25,7 +25,7 @@ const data = [
   },
   {
     id: '2',
-    avatar: 'https://d1o7cxaf8di5ts.cloudfront.net/file/brand/member-girlcrush-BM.jpg?d=200',
+    avatar: 'https://data.whicdn.com/images/148584794/large.jpg',
     name: 'Crush số 2',
     description: 'Em à, Em đã đánh cắp trái tim anh. Vì thế anh sẽ đánh cắp nụ hôn của em',
     img: 'https://qph.fs.quoracdn.net/main-qimg-bd14ad5123f2a0b5b7fd457a18e23de8',
@@ -34,7 +34,7 @@ const data = [
   },
   {
     id: '3',
-    avatar: 'https://d1o7cxaf8di5ts.cloudfront.net/file/brand/member-girlcrush-BM.jpg?d=200',
+    avatar: 'https://bellanyc.com/wp-content/uploads/2017/06/blake-lively.jpg',
     name: 'Crush số 3',
     description: 'Em là nguồn cảm hứng đằng sau tất cả những gì anh làm, làm nguồn gốc của những điều tốt lành trong cuộc sống của anh',
     img: '',
@@ -79,7 +79,7 @@ const data = [
   },
   {
     id: '8',
-    avatar: 'https://qph.fs.quoracdn.net/main-qimg-bd14ad5123f2a0b5b7fd457a18e23de8',
+    avatar: 'http://static.global.mnet.com/data/ucc/000/132/089',
     name: 'Crush số 8',
     description: 'Anh muốn tặng em trái tim này và em hãy giữ nó, bởi anh rất vụng về, anh sợ rằng anh sẽ làm mất hoặc dễ dàng tặng nó cho một ai khác',
     img: '',

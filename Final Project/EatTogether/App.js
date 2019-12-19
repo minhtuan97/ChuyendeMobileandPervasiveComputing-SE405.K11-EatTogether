@@ -14,14 +14,14 @@ import SplashScreen from './src/screens/splash/SplashScreen';
 import ChatNavigator from './src/screens/chat/ChatNavigator';
 import NotificationNavigator from './src/screens/notification/NotificationNavigator';
 import BlogNavigator from './src/screens/blog/BlogNavigator';
-import ProfileNavigator from './src/screens/profile/ProfileNavagator';
-import HomeNavigator from './src/screens/home/HomeNavigator';
+
+import Home from './src/screens/home/Home';
 
 const AppNavigator = createBottomTabNavigator(
   {
-    'Hồ sơ': ProfileNavigator,
+    'Hồ sơ': ChatNavigator,
     'Trò chuyện': ChatNavigator,
-    'Trang chủ': HomeNavigator,
+    'Trang chủ': Home,
     'Blog': BlogNavigator,
     'Thông báo': NotificationNavigator,
   },
