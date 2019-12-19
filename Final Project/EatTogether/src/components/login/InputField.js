@@ -30,7 +30,6 @@ export default class InputField extends Component {
           placeholder={this.props.placeholder}
           placeholderTextColor={'white'}
           onSubmitEditing={this.props.focus(this.props.placeholder)}
-          //placeholderTextColor="#ffffffDD"
           onChangeText={(text) => this.setState({ text })}
         />
         {this.props.error && <Image style={styles.iconError} source={close}/>}
@@ -53,16 +52,14 @@ InputField.defaultProps = {
 
 const styles = StyleSheet.create({
   container: {
-    //backgroundColor: '#ffffff44',
     flexDirection: 'row',
-    paddingVertical: w(3.4),
+    paddingVertical: w(2),
     borderRadius: w(10),
     borderColor: '#ddd',
     borderWidth: 1,
     width: '85%',
   },
   containerError: {
-    //backgroundColor: '#EF9A9A88',
     borderWidth: 1,
     borderColor: '#E57373',
   },

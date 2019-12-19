@@ -24,24 +24,6 @@ const data = [
     time: '12/12/19 10:01',
   },
   {
-    id: '2',
-    avatar: 'https://data.whicdn.com/images/148584794/large.jpg',
-    name: 'Crush số 2',
-    description: 'Em à, Em đã đánh cắp trái tim anh. Vì thế anh sẽ đánh cắp nụ hôn của em',
-    img: 'https://qph.fs.quoracdn.net/main-qimg-bd14ad5123f2a0b5b7fd457a18e23de8',
-    like: 10,
-    time: '12/12/19 10:01',
-  },
-  {
-    id: '3',
-    avatar: 'https://bellanyc.com/wp-content/uploads/2017/06/blake-lively.jpg',
-    name: 'Crush số 3',
-    description: 'Em là nguồn cảm hứng đằng sau tất cả những gì anh làm, làm nguồn gốc của những điều tốt lành trong cuộc sống của anh',
-    img: '',
-    like: 10,
-    time: '12/12/19 10:01',
-  },
-  {
     id: '4',
     avatar: 'https://d1o7cxaf8di5ts.cloudfront.net/file/brand/member-girlcrush-BM.jpg?d=200',
     name: 'Crush số 4',
@@ -104,7 +86,7 @@ export default class BlogHomeScreen extends Component {
       title: 'Blog',
       headerRight: () => (
         <TouchableOpacity
-          onPress={() => alert('Them bai dawng')}
+          onPress={() => navigation.navigate('BlogCreate')}
           style={styles.searchButton} activeOpacity={0.6}
         >
           <Icon name='plus' size={22} color={'green'}/>
