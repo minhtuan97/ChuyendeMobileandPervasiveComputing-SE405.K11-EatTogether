@@ -1,14 +1,14 @@
 import firebase from 'firebase';
 
-const config = {
-    apiKey: "AIzaSyAFw1N1TprRQAAqDzuhwHA4sBlXBk1ejiQ",
-    authDomain: "eattogetherdb.firebaseapp.com",
-    databaseURL: "https://eattogetherdb.firebaseio.com",
-    projectId: "eattogetherdb",
-    storageBucket: "eattogetherdb.appspot.com",
-    messagingSenderId: "1074702581493",
-    appId: "1:1074702581493:web:839f1b64bfc375542d0fbc",
-    measurementId: "G-2C7F9P3YD4"
+const firebaseConfig = {
+  apiKey: "AIzaSyAFw1N1TprRQAAqDzuhwHA4sBlXBk1ejiQ",
+  authDomain: "eattogetherdb.firebaseapp.com",
+  databaseURL: "https://eattogetherdb.firebaseio.com",
+  projectId: "eattogetherdb",
+  storageBucket: "eattogetherdb.appspot.com",
+  messagingSenderId: "1074702581493",
+  appId: "1:1074702581493:web:254659bbd0ca38c92d0fbc",
+  measurementId: "G-61J05T40TF"
 };
 
 const configSiVai = {
@@ -21,4 +21,4 @@ const configSiVai = {
     appId: "1:1046551399502:web:21b81e05eebc237074871f",
     measurementId: "G-0GPG5EHK2M"
   };
-export default fire = firebase.initializeApp(configSiVai);
+export default fire = firebase.initializeApp(firebaseConfig);
