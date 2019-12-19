@@ -4,27 +4,24 @@ import {
   View, 
   Dimensions,
   TouchableOpacity, 
-  Text,
-  TextInput, 
+  Text, 
   Image,  
   ImageBackground,
-  ActivityIndicator,
+  Alert,
   StatusBar,
-  ToastAndroid,
-  Keyboard,
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-
 import InputField from "../../components/login/InputField";
 import {w, h, totalSize} from '../../api/Dimensions';
-import fire from '../../api/FirebaseConfig';
+import fire from '../../api/FirebaseConfig'
+import firebaseSDK from '../../utils/firebaseSDK';
 
+const companyLogo = require('../../assets/login/companylogo.png');
 const email = require('../../assets/login/email.png');
 const password = require('../../assets/login/password.png');
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class SignInScreen extends Component {
     
-  // Ẩn header của navigation
   static navigationOptions = {
     header: null
   }
@@ -32,53 +29,97 @@ export default class SignInScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLogin: false, // Đang login
-      email: '', // Email
-      password: '',  //Password
+      isLogin: false,
+      email: '', 
+      password: '', 
       errorMessage: null,
-      hidden: true, // Ẩn hiện mật khẩu
+      hidden: true,
       isEmailCorrect: false,
       isPasswordCorrect: false,
     }
   }
 
-  // Xử lý Bấm nút đăng nhập đăng nhập
+  // loginToFireBase = (email, password) => {
+  //   this.setState({ isLogin: true });
+  //   Firebase.userLogin(email, password)
+  //     .then(user => {
+  //       if(user) this.props.success(user);
+  //       this.setState({ isLogin: false });
+  //     });
+  // };
+  // Xử lý đăng nhập
   handleSignIn = () => {
-    // Ẩn bàn phím
-    Keyboard.dismiss();
-    // Disable nút đăng nhập
-    this.setState({ isLogin: true });
-    // Lấy giá trị từ các Input Text
     const email = this.email.getInputValue();
     const password = this.password.getInputValue();
-    // Đăng nhập email qua firebase
+
+    // this.setState({
+    //   isEmailCorrect: email === '',
+    //   isPasswordCorrect: password === '',
+    // }, () => {
+    //   if(email !== '' && password !== ''){
+    //     this.loginToFireBase(email, password);
+    //   } else {
+    //     console.warn('Fill up all fields')
+    //   }
+    // });
+
     this.Login(email,password);
-    //Enable nút đăng nhập
-    this.setState({ isLogin: false });
   }
 
-  // hàm lưu AsyncStorage chuyển vào màn hình chính nếu Login thành công
-  _signInAsync = async (email, password) => {
+  _storeData = async () => {
     try {
-      await AsyncStorage.setItem('email', email);
-      await AsyncStorage.setItem('password', password);
+      await AsyncStorage.setItem('@MySuperStore:key', 'I like to save it.');
+    } catch (error) {
+      // Error saving data
+    }
+  };
+
+  // hàm đăng nhập: lưu AsyncStorage: userToken và chuyển đến AppNavigation
+  _signInAsync = (email, password) => {
+    // this.setState({ isLogin: true });
+    // Firebase.userLogin(email, password)
+    //   .then(user => {
+    //     if(user) this.props.success(user);
+    //     this.setState({ isLogin: false });
+    //   });
+    try {
+      //AsyncStorage.setItem('user', 'abc');
+      AsyncStorage.setItem('email', email);
+      AsyncStorage.setItem('password', password);
       this.props.navigation.navigate('App');
     } catch (error) {
-      console.warn('Lỗi lưu dữ liệu');
+      console.warn('Error saving data');
     }
   }
 
-  // Hàm đăng nhập qua firebase
   Login = (email, password) => {
-    fire.auth().signInWithEmailAndPassword(email, password)
-    .then(()=>{
-      // thành công
-      ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.SHORT);
-      this._signInAsync(email, password);
-    }).catch(function(error) {
-      // thất bại
-      ToastAndroid.show(error.message, ToastAndroid.SHORT);
-    });
+      fire.auth().signInWithEmailAndPassword(email, password)
+      .then(()=>{
+        Alert.alert(
+          'Login',
+          'Đăng nhập thành công',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+            {text: 'OK', onPress: this._signInAsync(email, password)},
+          ],
+          {cancelable: false},
+        )
+      }
+                   
+      )
+      .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+        Alert.alert(
+            'Lỗi '+ errorMessage,
+          )
+      });
   };
 
   render() {
@@ -101,14 +142,13 @@ export default class SignInScreen extends Component {
                 placeholder="Email"
                 keyboardType="email-address"
                 style={styles.inputField}
-                blurOnSubmit={true}
                 error={this.state.isEmailCorrect}
                 focus={this.changeInputFocus}
                 ref={ref => this.email = ref}
                 icon={email}
               />
               <InputField
-                placeholder='Password'
+                placeholder="Password"
                 style={styles.inputField}
                 returnKeyType="done"
                 secureTextEntry={true}
@@ -118,18 +158,15 @@ export default class SignInScreen extends Component {
                 focus={this.changeInputFocus}
                 icon={password}
               />
-              <TouchableOpacity
-                onPress={()=>this.handleSignIn(this)}
-                style={styles.button}
-                activeOpacity={0.6} 
-                disabled={this.state.isLogin}
-              >
-                { this.state.isLogin ? (
-                  <ActivityIndicator size="small" color='white'/>
-                ) : (
+              <View>
+                <TouchableOpacity
+                  onPress={()=>this.handleSignIn(this)}
+                  style={styles.button}
+                  activeOpacity={0.6} 
+                >
                   <Text style={styles.text}>Đăng nhập</Text>
-                )}
-              </TouchableOpacity>
+                </TouchableOpacity>
+              </View>
             </View>
             <View style={styles.footer}>
               <TouchableOpacity
@@ -162,6 +199,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 3,
+    //justifyContent: 'center',
   },
   header1: {
     justifyContent: 'center',
@@ -203,7 +241,7 @@ const styles = StyleSheet.create({
   inputField: {
     alignItems: 'center',
     marginVertical: 2,
-    backgroundColor: 'rgba(52, 52, 52, 0.4)',
+    backgroundColor: 'rgba(52, 52, 52, 0.2)',
   },
   button: {
     width: width*0.85,
@@ -230,9 +268,11 @@ const styles = StyleSheet.create({
   createAccount: {
     textAlign: 'center',
     fontSize: totalSize(2),
+    fontWeight: '600',
   },
   forgotPassword: {
     textAlign: 'center',
     fontSize: totalSize(2),
+    fontWeight: '600',
   },
 });

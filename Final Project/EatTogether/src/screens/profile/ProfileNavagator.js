@@ -11,8 +11,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import ProfileHomeScreen from '../profile/ProfileHomeScreen';
 import UpdateProfileScreen from '../profile/UpdateProfileScreen';
-import RegisterProfileScreen from '../profile/RegisterProfileScreen';
-
 
 const ProfileNavigator = createStackNavigator(
     {
@@ -21,9 +19,6 @@ const ProfileNavigator = createStackNavigator(
       },
       ProfileUpdate: {
         screen: UpdateProfileScreen,
-      },
-      ProfileCreate: {
-        screen: RegisterProfileScreen,
       }
     },
     {
