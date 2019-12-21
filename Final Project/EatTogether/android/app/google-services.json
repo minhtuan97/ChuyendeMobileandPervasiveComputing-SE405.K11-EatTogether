@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1074702581493",
+    "firebase_url": "https://eattogetherdb.firebaseio.com",
+    "project_id": "eattogetherdb",
+    "storage_bucket": "eattogetherdb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074702581493:android:7ed88cb201ad03212d0fbc",
+        "android_client_info": {
+          "package_name": "com.eattogether"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1074702581493-2l2hv4vdnitltf7ul3v6foo24gbt3t1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCidDiptn6C04GX6ik-SqCzgPglaGM5dig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1074702581493-2l2hv4vdnitltf7ul3v6foo24gbt3t1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
