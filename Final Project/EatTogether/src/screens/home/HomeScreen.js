@@ -25,7 +25,6 @@ const data = [
     timeUtil: '2 tiếng',
     location: 'ToCoToCo Võ Văn Nhân Thủ Đức',
     description: 'Đang thèm trà sữa, ai đi chung không',
-    img: 'http://woridnews.com/wp-content/uploads/2016/10/cd3e35dbcf23269780779b3f7b9e2fcc.png',
   },
   {
     id: '2',
@@ -35,7 +34,6 @@ const data = [
     timeUtil: '40 phút',
     location: 'VinCom Thủ Đức',
     description: 'Muốn ăn lẩu Thái',
-    img: 'https://qph.fs.quoracdn.net/main-qimg-bd14ad5123f2a0b5b7fd457a18e23de8',
   },
   {
     id: '3',
@@ -45,7 +43,6 @@ const data = [
     timeUtil: '2 tiếng',
     location: 'ToCoToCo Võ Văn Nhân Thủ Đức',
     description: 'Đang thèm trà sữa, ai đi chung không',
-    img: 'http://woridnews.com/wp-content/uploads/2016/10/cd3e35dbcf23269780779b3f7b9e2fcc.png',
   },
   {
     id: '4',
@@ -55,7 +52,6 @@ const data = [
     timeUtil: '40 phút',
     location: 'VinCom Thủ Đức',
     description: 'Muốn ăn lẩu Thái',
-    img: 'https://qph.fs.quoracdn.net/main-qimg-bd14ad5123f2a0b5b7fd457a18e23de8',
   },
 ]
 
@@ -64,6 +60,13 @@ export default class HomeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: 'Trang chủ',
+      // headerStyle: {
+      //   backgroundColor: '#f4511e',
+      // },
+      // headerTintColor: '#fff',
+      // headerTitleStyle: {
+      //   fontWeight: 'bold',
+      // },
       headerRight: () => (
         <TouchableOpacity
           onPress={() => navigation.navigate('CreateBooking')}
@@ -75,24 +78,15 @@ export default class HomeScreen extends React.Component {
       ),
     }
   }
-  // static navigationOptions = {
-  //   title: 'Trang chủ',
-  //   headerStyle: {
-  //     backgroundColor: '#f4511e',
-  //   },
-  //   headerTintColor: '#fff',
-  //   headerTitleStyle: {
-  //     fontWeight: 'bold',
-  //   },
-  // };
 
   constructor(props) {
     super(props);
     this.state = {
-      email : '11',
-      password: '33', 
+      email : '',
+      password: '', 
     }
   }
+
   // Lấy dữ liệu từ AsyncStorage
   _retrieveData = async () => {
     try {
@@ -149,7 +143,7 @@ export default class HomeScreen extends React.Component {
             parentFlatList={this} //để lát làm swipe left và swipe right
           />
         </View>
-        <View style={styles.infoUser}>
+        {/* <View style={styles.infoUser}>
           <Text>Thông tin người dùng</Text>
           <Text>{this.state.email}</Text>
           <Text>{this.state.password}</Text>
@@ -160,7 +154,7 @@ export default class HomeScreen extends React.Component {
               otherParam: 'anything you want here',
             })}
           />
-        </View>
+        </View> */}
       </View>
     );
   }

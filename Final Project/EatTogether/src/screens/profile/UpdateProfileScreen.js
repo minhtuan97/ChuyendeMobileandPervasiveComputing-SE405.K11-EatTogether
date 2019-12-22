@@ -4,12 +4,17 @@ import {
   View,
   Text 
 } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNFetchBlob from 'rn-fetch-blob';
+import uuid from 'uuid';
+import firebase from '../../api/FirebaseConfig';
+
+// Get a reference to the database service
+const database = firebase.database();
 
 export default class UpdateProfileScreen extends React.Component {
+  
   static navigationOptions = {
     title: 'Details',
     headerStyle: {
@@ -19,12 +24,8 @@ export default class UpdateProfileScreen extends React.Component {
     headerTitleStyle: {
       fontWeight: 'bold',
     },
-    tabBarLabel: ({ tintColor }) => (
-      <Text style={{ fontSize: 10, color: tintColor }}>HighScores</Text>
-    ),
-    tabBarIcon: ({ tintColor }) =>
-      <Icon name="home" size={20} color={tintColor} />
   };
+
   render() {
     const { navigation } = this.props;
     return (

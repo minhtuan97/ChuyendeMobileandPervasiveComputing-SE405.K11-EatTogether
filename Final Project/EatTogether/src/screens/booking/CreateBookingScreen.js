@@ -76,18 +76,6 @@ export default class CreateBookingScreen extends Component {
   static navigationOptions = ({ navigation }) => {
         return {
             title: 'Tạo lịch hẹn',
-            // headerRight: () => (
-            //   <TouchableOpacity
-            //     onPress={() => alert('Đã tạo lịch hẹn')}
-            //     style={styles.createBookingButton} 
-            //     activeOpacity={0.6}
-            //   >
-            //     <Icon name='check' size={20} color={'green'}/>
-            //   </TouchableOpacity>
-            // ),
-            headerStyle: {
-                elevation: 0,
-            },
         }
     }
 

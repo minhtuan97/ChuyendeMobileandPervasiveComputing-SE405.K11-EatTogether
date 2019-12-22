@@ -9,32 +9,26 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
-  Button,
 } from 'react-native';
-import RNFetchBlob from 'rn-fetch-blob';
-import uuid from 'uuid';
+
 import moment from 'moment';
+
 import DateTimePicker from '@react-native-community/datetimepicker';
 import ImagePicker from 'react-native-image-picker';
+
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
-import firebase from '../../api/FirebaseConfig';
-
-// Get a reference to the database service
-const database = firebase.database();
 
 export default class CreateBookingScreen extends Component {
 
   // Chọn ảnh
   chooseFile = () => {
-
     var options = {
       title: 'Chọn ảnh',
       takePhotoButtonTitle: 'Chụp ảnh từ máy ảnh',
       chooseFromLibraryButtonTitle: 'Chọn ảnh từ thư viện',
       cancelButtonTitle: 'Hủy',
-      maxWidth: 720,
-      maxHeight: 720,
+      maxWidth: 480,
+      maxHeight: 480,
       quality: 1,
       storageOptions: {
         skipBackup: true,
@@ -56,7 +50,6 @@ export default class CreateBookingScreen extends Component {
           filePath: source,
         });
       }
-
     });
   };
 
@@ -113,9 +106,20 @@ export default class CreateBookingScreen extends Component {
     this.show('time');
   }
 
-  registerAcount = () => {
-    
-  }
+  // static navigationOptions = ({ navigation }) => {
+  //   return {
+  //     title: 'Tạo hồ sơ',
+  //     // headerRight: () => (
+  //     //   <TouchableOpacity
+  //     //     onPress={() => alert('Đã tạo lịch hẹn')}
+  //     //     style={styles.createBookingButton} 
+  //     //     activeOpacity={0.6}
+  //     //   >
+  //     //     <Icon name='check' size={20} color={'green'}/>
+  //     //   </TouchableOpacity>
+  //     // ),
+  //   }
+  // }
 
   render() {
 
@@ -141,6 +145,10 @@ export default class CreateBookingScreen extends Component {
                 <TouchableOpacity
                   onPress={this.chooseFile.bind(this)}
                 >
+                  {/*<Image 
+                    source={{ uri: this.state.filePath.path}} 
+                    style={{width: 100, height: 100}} />
+                  */}
                   <Image
                     source={{
                       uri: 'data:image/jpeg;base64,' + this.state.filePath.data,
@@ -335,7 +343,6 @@ export default class CreateBookingScreen extends Component {
 
           <TouchableOpacity
             style={styles.registerButton}
-            onPress={this.registerAcount()}
           >
             { this.state.isRegister ? (
               <ActivityIndicator size='small' color='white' />
