@@ -21,4 +21,4 @@ const configSiVai = {
     appId: "1:1046551399502:web:21b81e05eebc237074871f",
     measurementId: "G-0GPG5EHK2M"
   };
-export default fire = firebase.initializeApp(configSiVai);
+export default fire = firebase.initializeApp(config);
