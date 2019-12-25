@@ -20,14 +20,12 @@ export default class ChatPeopleItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeRowKey: null, //set item active
-      numberOfRefresh: 0,
-      isRightOpen: false
+
     };
   }
 
-  _onLongPress = (navigation) => {
-    navigation.navigate('ChatDetail');
+  _onLongPress = (navigation, name) => {
+    navigation.navigate('ChatDetail', { name: name });
   }
 
   render() {
@@ -37,14 +35,24 @@ export default class ChatPeopleItem extends Component {
 
     return(
       <View style={styles.wraper}>
-        <SwipeRow leftOpenValue={90} rightOpenValue={-65}>
+        <SwipeRow leftOpenValue={90} rightOpenValue={-100}>
           <View style={styles.standaloneRowBack}>
-            <Text style={styles.rowBackButttonLeft}>Xem Hồ sơ</Text>
-            <Text style={styles.rowBackButttonRight}>Xóa</Text>
+            <TouchableOpacity
+             onPress={() => alert("xem hoso")}
+              style={styles.rowBackButttonLeft}
+            >
+              <Text style={styles.rowBackButttonLeft}>Xem Blog</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+            onPress={() =>  alert("xoa")}
+              style={styles.rowBackButttonLeft}
+            >
+              <Text style={styles.rowBackButttonRight}>Đặt lịch hẹn</Text>
+            </TouchableOpacity>            
           </View>
           <View style={styles.standaloneRowFront}>
             <TouchableOpacity
-              onLongPress={() => this._onLongPress(navigation)}
+              onPress={() => this._onLongPress(navigation, item.name)}
               style={styles.container}
             >
               <View style={styles.bgAvatar}>
@@ -77,7 +85,7 @@ const {height, width} = Dimensions.get('window')
 const styles = StyleSheet.create({
   wraper: {
     flex: 1,
-    margin: 4,
+    margin: 8,
     borderRadius: 4,
   },
   standaloneRowBack: {

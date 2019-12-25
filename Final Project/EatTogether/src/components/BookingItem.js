@@ -1,66 +1,41 @@
 import React, { Component } from 'react';
 import {
-  Animated,
   Dimensions,
   Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-//  ScrollView,
-  FlatList,
-  Button,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { ScrollView } from 'react-native-gesture-handler';
 
-export default class CreateBookingScreen extends Component {
+export default class BookingItem extends Component {
+  
   constructor(props) {
     super(props);
     this.state = {
       id: '',
       user: '',
       location: '',
-      time: '',
+      time: new Date(),
       title: '',
-      hiden: true, 
+      isShowMore: false, 
     };
   }
 
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: 'Tạo Lịch Hẹn',
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => alert('Đã tạo lịch hẹn')}
-          style={styles.createBookingButton} 
-          activeOpacity={0.6}
-        >
-          <Icon name='check' size={20} color={'green'}/>
-        </TouchableOpacity>
-      ),
-    }
-  }
-
+  // Đặt lịch
   _booking = (navigation) => {
     alert('Đã đặt lịch');
     //navigation.navigate('ChatDetail');
   }
 
+  // Hiện tắt thông tin thêm
   _showMore = () => {
     this.setState((previousState) => (
-      { hiden: !previousState.hiden }
+      { isShowMore: !previousState.isShowMore }
     ))
-    //alert('đi đến thông báo');
-    //navigation.navigate('ChatDetail');
   }
-
-  static navigationOptions = ({ navigation }) => {
-        return {
-            title: 'Tạo lịch hẹn',
-        }
-    }
 
   render() {
 
@@ -69,23 +44,7 @@ export default class CreateBookingScreen extends Component {
 
     return(
       <View style={styles.wraper}>
-        <ScrollView>
-          <View style={styles.nameAndTime}>
-            <View style={styles.name}>
-              <Text style={styles.nameText}>Chọn thời gian</Text>
-            </View>
-            <View style={styles.time}>
-              <Text style={styles.timeText}>Chọn địa điểm</Text>
-            </View>
-            <View style={styles.name}>
-              <Text style={styles.nameText}>Nội dung mong muốn</Text>
-            </View>
-            <View style={styles.time}>
-              <Text style={styles.timeText}>Chọn thêm ảnh</Text>
-            </View>
-          </View>
-        </ScrollView>
-        {/* <View style={styles.header}>
+        <View style={styles.header}>
           <View style={styles.avatar}>
             <Image
               source={{uri: item.avatar}}
@@ -117,15 +76,7 @@ export default class CreateBookingScreen extends Component {
             <Icon name='poll-h' size={20} color={'red'}/>
             <Text style={styles.statusText}>{item.description}</Text>
           </View>
-          { false &&
-            <View style={styles.img}>
-              <Image 
-                source={{uri: item.img}}
-                style={styles.img}
-              />
-            </View>
-          }
-          { !this.state.hiden &&
+          { this.state.isShowMore &&
             <View>
               <View style={styles.content}>
                 <Icon name='guitar' size={20} color={'red'}/>
@@ -133,7 +84,7 @@ export default class CreateBookingScreen extends Component {
               </View>
               <View style={styles.content}>
                 <Icon name='hamburger' size={20} color={'red'}/>
-                <Text style={styles.statusText}>Món ăn ưa thích: Bún đậu</Text>
+                <Text style={styles.statusText}>Tính cách: vui vẻ hòa đồng</Text>
               </View>
             </View>
           }
@@ -143,7 +94,12 @@ export default class CreateBookingScreen extends Component {
             style={styles.seeMoreButton}
             onPress={this._showMore}
           >
+            { !this.state.isShowMore ? (
             <Text style={styles.seeMoreText}>Xem thêm</Text>
+            ) : (
+              <Text style={styles.seeMoreText}>Thu gọn</Text>
+            )
+            }
           </TouchableOpacity>
           <TouchableOpacity 
             style={styles.startBookingButton}
@@ -151,7 +107,7 @@ export default class CreateBookingScreen extends Component {
           >
             <Text style={styles.startBookingText}>Đăt lịch</Text>
           </TouchableOpacity>
-        </View> */}
+        </View>
       </View>   
     )
   }
@@ -160,11 +116,15 @@ export default class CreateBookingScreen extends Component {
 const {height, width} = Dimensions.get('window')
 
 const styles = StyleSheet.create({
-  createBookingButton: {
-    margin: 16,
-  },
   wraper: {
     flex: 1,
+    width: width,
+    alignItems: 'stretch',
+    marginBottom: 16,
+    borderRadius: 16,
+    //borderWidth: 1,
+    //borderColor: 'red',
+    backgroundColor: '#f0f0f0',
   },
   header: {
     flexDirection: 'row', 
@@ -174,20 +134,11 @@ const styles = StyleSheet.create({
   main: {
 
   },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    padding: 10,
-  },
   avatarImg: {
     width: width*15/100,
     height: width*15/100,
     borderRadius: width*10/100,
     margin: 4,
-  },
-  img: {
-    width: width,
-    height: 320,
   },
   title: {
     fontSize: 24,
@@ -197,15 +148,6 @@ const styles = StyleSheet.create({
   },
   option: {
     flex: 1,
-  },
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  }, 
-  bgAvatar: {
-    flex: 2
   },
   nameAndTime: {
     flex: 8,
@@ -231,7 +173,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   content: {
-    marginLeft: 10,
+    marginLeft: 16,
+    marginVertical: 4,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -245,30 +188,29 @@ const styles = StyleSheet.create({
     padding: 6,
     //color: 'red',
   },
-  likeIcon: {
-    marginHorizontal: 5,
-  },
   footer: {
     flexDirection: 'row',
-    backgroundColor: 'green',
-    borderRadius: 6,
   },
   seeMoreButton: {
     flex: 1,
-    padding: 10,
+    padding: 16,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'green',
+    borderRadius: 16,
   },
   startBookingButton: {
     flex: 1,
-    padding: 10,
+    padding: 16,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#f73660',
+    borderRadius: 16,
   },
   seeMoreText: {
-    color: 'yellow',
+    color: 'white',
   },
   startBookingText: {
-    color: 'pink',
+    color: 'white',
   },
 })

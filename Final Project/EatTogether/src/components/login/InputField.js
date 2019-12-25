@@ -11,6 +11,10 @@ export default class InputField extends Component {
 
   getInputValue = () => this.state.text;
 
+  resetInputValue = () => { 
+    this.setState({text: ''});
+  }
+
   render() {
     return (
       <View style={[styles.container, this.props.style, this.props.error ? styles.containerError : {}]}>
@@ -18,7 +22,7 @@ export default class InputField extends Component {
         <TextInput
           style={styles.inputText}
           value={this.state.text}
-          selectionColor="white"
+          selectionColor={'green'}
           autoCapitalize={this.props.autoCapitalize}
           ref={ref => this.input = ref}
           autoCorrect={false}
@@ -33,7 +37,7 @@ export default class InputField extends Component {
           //placeholderTextColor="#ffffffDD"
           onChangeText={(text) => this.setState({ text })}
         />
-        {this.props.error && <Image style={styles.iconError} source={close}/>}
+        {/* {this.props.error && <Image style={styles.iconError} source={close}/>} */}
       </View>
     );
   }

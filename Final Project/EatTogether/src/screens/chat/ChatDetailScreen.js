@@ -7,6 +7,13 @@ export default class ChatDetailScreen extends React.Component {
     messages: [],
   }
 
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
+    return {
+      title: params ? params.name : 'no name',
+    }
+  }
+
   componentDidMount() {
     this.setState({
       messages: [
@@ -37,6 +44,8 @@ export default class ChatDetailScreen extends React.Component {
         onSend={messages => this.onSend(messages)}
         user={{
           _id: 1,
+          name: 'React Native',
+          avatar: 'https://placeimg.com/140/140/any',
         }}
       />
     )
