@@ -5,9 +5,6 @@ import {
 } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import reducers from './src/reducers';
 
 import AuthStack from './src/screens/login/LoginNavigator';
 import SplashScreen from './src/screens/splash/SplashScreen';
@@ -26,7 +23,7 @@ const AppNavigator = createBottomTabNavigator(
     'Thông báo': NotificationNavigator,
   },
   {
-    initialRouteName : 'Trang chủ',
+    initialRouteName : 'Thông báo',
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ tintColor }) => {
         const { routeName } = navigation.state;
@@ -39,9 +36,7 @@ const AppNavigator = createBottomTabNavigator(
           case 'Blog': iconName = 'feather-alt'; break;
           case 'Hồ sơ': iconName = 'user'; break;
         }
-        // You can return any component that you like here! We usually use an
-        // icon component from react-native-vector-icons
-        return <Icon name={iconName} size={20} color={tintColor} />;
+        return <Icon name={iconName} size={20} color={tintColor} solid/>;
       },
     }),
     tabBarOptions: {
@@ -62,14 +57,4 @@ const InitialNavigator = createSwitchNavigator(
   }
 );
 
-const AppContainer = createAppContainer(InitialNavigator);
-
-export default class App extends React.Component {
-  render() {
-    return (
-      <Provider store={createStore(reducers)}>
-        <AppContainer />
-      </Provider>
-    );
-  }
-}
+export default AppContainer = createAppContainer(InitialNavigator);

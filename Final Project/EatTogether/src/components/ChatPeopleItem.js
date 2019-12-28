@@ -41,13 +41,13 @@ export default class ChatPeopleItem extends Component {
              onPress={() => alert("xem hoso")}
               style={styles.rowBackButttonLeft}
             >
-              <Text style={styles.rowBackButttonLeft}>Xem Blog</Text>
+              <Text style={styles.rowBackButttonLeft}>Gọi</Text>
             </TouchableOpacity>
             <TouchableOpacity
             onPress={() =>  alert("xoa")}
               style={styles.rowBackButttonLeft}
             >
-              <Text style={styles.rowBackButttonRight}>Đặt lịch hẹn</Text>
+              <Text style={styles.rowBackButttonRight}>Xóa</Text>
             </TouchableOpacity>            
           </View>
           <View style={styles.standaloneRowFront}>

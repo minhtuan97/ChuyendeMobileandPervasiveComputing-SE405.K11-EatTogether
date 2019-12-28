@@ -18,7 +18,6 @@ import ImagePicker from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import {w, h, totalSize} from '../../api/Dimensions';
-import InputField from '../../components/login/InputField';
 import firebase from "../../api/FirebaseConfig";
 
 const email = require('../../assets/login/email.png');
@@ -26,9 +25,6 @@ const password = require('../../assets/login/password.png');
 const repeat = require('../../assets/login/repeat.png');
 
 import RNFetchBlob from 'rn-fetch-blob';
-
-// Get a reference to the database service
-const database = firebase.database();
 
 const Blob = RNFetchBlob.polyfill.Blob;
 const fs = RNFetchBlob.fs;
@@ -38,7 +34,6 @@ window.Blob = Blob
 
 export default class SignUpScreen extends Component {
 
-  // Header Navigation
   static navigationOptions = {
     title: 'Tạo tài khoản',
     headerStyle: {
@@ -97,9 +92,6 @@ export default class SignUpScreen extends Component {
     imagePath: {},
     imgURL: '',
 
-    isEmailCorrect: false,
-    isPasswordCorrect: false,
-    isRepeatCorrect: false,
     isCreating: false,  // trạng thái tạo tài khoản qua firebase
   };
 
@@ -186,7 +178,6 @@ export default class SignUpScreen extends Component {
     firebase.database().ref('users/' + userId).set({
       uid: userId,
       email: this.state.email,
-      password: this.state.password,
       avatarURL: avatarURL,
       gender: this.state.gender,
       name : this.state.name,
@@ -200,9 +191,9 @@ export default class SignUpScreen extends Component {
   }
 
   // Tạo tài khoản Firebase và lưu thông tin người dùng
-  createFireBaseAccount = () => {
+  createFireBaseAccount = async () => {
     this.setState({ isCreating: true });
-    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+    await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then(()=>{
       // Lấy User Id
       let user = firebase.auth().currentUser;
@@ -221,15 +212,8 @@ export default class SignUpScreen extends Component {
       // ...
       ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
       ToastAndroid.show('Lỗi tạo tài khoản người dùng', ToastAndroid.SHORT);
-    }).finally (() => {
-      firebase.auth().signOut().then(() => {
-        // ToastAndroid.show('Dang xuat thanh cong', ToastAndroid.SHORT);
-      }).catch(() => {
-        // ToastAndroid.show('Dang xuat khong thanh cong', ToastAndroid.SHORT);
-      }).finally (() => {
-        this.setState({ isCreating: false });
-      })
-    })
+    }) 
+    this.setState({ isCreating: false });
   };
 
   render() {
@@ -540,7 +524,7 @@ export default class SignUpScreen extends Component {
   }
 }
 
-const {height, width} = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -551,54 +535,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  create: {
-    fontSize: totalSize(2.4),
-    marginTop: h(7),
-    marginBottom: h(4),
-    fontWeight: '700',
-  },
-  signIn: {
-    fontSize: totalSize(2),
-    fontWeight: '700',
-  },
-  touchable: {
-    alignSelf: 'flex-start',
-    marginLeft: w(8),
-    marginTop: h(4),
-  },
-  inputField: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(52, 52, 52, 0.4)',
-    marginVertical: h(1),
-  },
-  button: {
-    width: w(85),
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'green',
-    paddingVertical: w(2),
-    borderRadius: w(10),
-    borderColor: '#E0E0E0',
-    borderWidth: 1,
-    marginTop: h(4),
-  },
-  spinner: {
-    height: h(5),
-  },
-  text: {
-    color: 'white',
-    fontWeight: '600',
-    paddingVertical: h(1),
-    fontSize: totalSize(2.2),
-  },
   container1: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
-
   wraper: {
     flex: 1,
   },

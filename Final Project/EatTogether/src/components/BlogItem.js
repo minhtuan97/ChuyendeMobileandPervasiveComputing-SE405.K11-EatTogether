@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 // Thẻ từng bài đăng Blog
@@ -19,16 +18,8 @@ export default class BlogItem extends Component {
     };
   }
 
-  _onLongPress = (navigation) => {
-    alert('đi đến thông báo');
-    //navigation.navigate('ChatDetail');
-  }
-
   render() {
-
     const {item} = this.props;
-    const {navigation} = this.props;
-
     return(
       <View style={styles.wraper}>
         <View style={styles.header}>

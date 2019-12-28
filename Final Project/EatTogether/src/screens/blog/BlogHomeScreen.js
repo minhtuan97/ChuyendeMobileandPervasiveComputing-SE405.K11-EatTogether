@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import {
-    Dimensions,
-    StyleSheet,
-    TouchableOpacity,
-    View,
-    Text,
-    FlatList,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+  StatusBar,
+  FlatList,
 } from 'react-native';
-
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
 import BlogItem from '../../components/BlogItem';
 
 // Dữ liệu danh sánh people trong list chat
@@ -17,8 +16,8 @@ const data = [
   {
     id: '1',
     avatar: 'http://woridnews.com/wp-content/uploads/2016/10/cd3e35dbcf23269780779b3f7b9e2fcc.png',
-    name: 'Crush số 1',
-    description: 'Crush số 1 waved at you!',
+    name: 'Hân Tham ăn',
+    description: 'Hôm nay ăn gì đây, Bún đậu mắm tôm thì sao nhĩ?',
     img: '',
     like: 10,
     time: '12/12/19 10:01',
@@ -26,28 +25,28 @@ const data = [
   {
     id: '4',
     avatar: 'https://d1o7cxaf8di5ts.cloudfront.net/file/brand/member-girlcrush-BM.jpg?d=200',
-    name: 'Crush số 4',
-    description: 'Cảm ơn chúa, bởi người đã gửi nữ thần xinh đẹp nhất của thiên đường vào cuộc sống của con.',
-    img: 'https://d1o7cxaf8di5ts.cloudfront.net/file/brand/member-girlcrush-BM.jpg?d=200',
-    like: 10,
+    name: 'Hồng My',
+    description: 'Mới review món mới tại wincome Thủ Đức nè, Siêu ngon ...\nThèm quá :)',
+    img: 'https://image.insider.com/5c00467da1823008c120a4d4?width=1100&format=jpeg&auto=webp',
+    like: 53,
     time: '12/12/19 10:01',
   },
   {
     id: '5',
     avatar: 'https://pbs.twimg.com/profile_images/652669289326092288/RsXc7UnS_400x400.jpg',
-    name: 'Crush số 5',
-    description: 'Anh rất hạnh phúc vì được gặp em, em là điều tuyệt vời nhất trong cuộc sống của anh.',
+    name: 'Lan Anh',
+    description: 'Buồn quá ai đi ăn chung ko.',
     img: '',
-    like: 10,
+    like: 109,
     time: '12/12/19 10:01',
   },
   {
     id: '6',
     avatar: 'https://qph.fs.quoracdn.net/main-qimg-bd14ad5123f2a0b5b7fd457a18e23de8',
-    name: 'Crush số 6',
+    name: 'Phương Uyên',
     description: 'Khi anh yêu em, trái tim em trở nên ấm áp. Hãy để tình yêu ngọt ngào của chúng ta lớn lên theo từng ngày',
     img: '',
-    like: 10,
+    like: 205,
     time: '12/12/19 10:01',
   },
   {
@@ -104,17 +103,20 @@ export default class BlogHomeScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <FlatList
-          ref={"flatList"}
-          data={ data }
-          renderItem={({ item }) => (
-            <BlogItem item={ item } navigation={this.props.navigation} />
-          )}
-          keyExtractor={(item) => item.id } // tránh trùng các item với nhau
-          parentFlatList={this} //để lát làm swipe left và swipe right
-        />
-      </View>
+      <>
+        <StatusBar backgroundColor={'green'} barStyle={'light-content'}/> 
+        <View style={styles.container}>
+          <FlatList
+            ref={"flatList"}
+            data={ data }
+            renderItem={({ item }) => (
+              <BlogItem item={ item } navigation={this.props.navigation} />
+            )}
+            keyExtractor={(item) => item.id } // tránh trùng các item với nhau
+            parentFlatList={this} //để lát làm swipe left và swipe right
+          />
+        </View>
+      </>
     );
   }
 }

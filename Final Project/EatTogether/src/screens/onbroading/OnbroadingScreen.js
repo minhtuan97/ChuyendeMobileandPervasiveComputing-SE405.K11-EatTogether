@@ -10,8 +10,6 @@ import {
 } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
-const { width } = Dimensions.get('window');
-
 // Mảng obj các onbroading
 const ENTRIES = [
   {
@@ -46,12 +44,12 @@ export default class OnbroadingScreen extends Component {
   }
 
   // Hàm xử lý khi nhấn nút tham gia ngay
-  _onPressButton() {
+  onPressButton() {
     this.props.navigation.navigate('SignIn');
   }
 
   // Hàm vẽ từng Item
-  _renderItem ({item, index}) {
+  renderItem ({item, index}) {
     return (
       <View style={styles.slide}>
         <View>
@@ -81,7 +79,7 @@ export default class OnbroadingScreen extends Component {
 
               // Required
               data={ENTRIES}
-              renderItem={this._renderItem}
+              renderItem={this.renderItem}
               itemWidth={width*0.8}
               sliderWidth={width}
               //itemHeight={width*1.2}
@@ -124,7 +122,7 @@ export default class OnbroadingScreen extends Component {
             />
             </View>
             <View>
-            <TouchableOpacity  onPress={() => this._onPressButton(this)}>
+            <TouchableOpacity  onPress={() => this.onPressButton(this)}>
               <View style={styles.button}>
                 <Text style={styles.textButton}>Tham gia ngay!</Text>
               </View>
@@ -136,6 +134,8 @@ export default class OnbroadingScreen extends Component {
     );
   }
 }
+
+const { width } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
   // Layer

@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import { 
-    StyleSheet, 
-    View, 
-    Dimensions,
-    TouchableOpacity, 
-    Text,
-    Image,  
-    ImageBackground,
-    ActivityIndicator,
-    StatusBar,
-    ToastAndroid,
-    Keyboard,
+  StyleSheet, 
+  View, 
+  Dimensions,
+  TouchableOpacity, 
+  Text,
+  Image,  
+  ImageBackground,
+  ActivityIndicator,
+  StatusBar,
+  ToastAndroid,
+  Keyboard,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-
 import InputField from "../../components/login/InputField";
 import {w, h, totalSize} from '../../api/Dimensions';
 import firebase from '../../api/FirebaseConfig';
@@ -23,142 +22,136 @@ const password = require('../../assets/login/password.png');
 
 export default class SignInScreen extends Component {
     
-    // Ẩn header của navigation
-    static navigationOptions = {
-        header: null
-    }
+  // Ẩn header của navigation
+  static navigationOptions = {
+    header: null
+  }
   
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLogin: false, // Đang login
-            email: '', // Email
-            password: '',  //Password
-            errorMessage: null,
-            hidden: true, // Ẩn hiện mật khẩu
-            isEmailCorrect: false,
-            isPasswordCorrect: false,
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      isLogin: false,
+      isEmailCorrect: false,
+      isPasswordCorrect: false,
     }
+  }
 
-    // Lưu thông tin người dùng (uid)
-    storeData = async (uid) => {
-        try {
-          await AsyncStorage.setItem('uid', uid);
-        } catch (error) {
-          // Error saving data
-          ToastAndroid.show('Lỗi lưu thông tin người dùng', ToastAndroid.SHORT)
-        }
-    };
-
-    // Xử lý Bấm nút đăng nhập đăng nhập
-    handleSignIn = () => {
-        // Ẩn bàn phím
-        Keyboard.dismiss();
-        // Disable nút đăng nhập
-        const email = this.email.getInputValue();
-        const password = this.password.getInputValue();
-
-        this.setState({
-            isEmailCorrect: email === '',
-            isPasswordCorrect: password === '',
-        }, () => {
-            if(email !== '' && password !== ''){
-                // Đăng nhập email qua firebase
-                this.Login(email,password);
-            } else {
-                ToastAndroid.show('Vui lòng điền đầy đủ thông tin', ToastAndroid.SHORT);
-            }
-        })
+  // Lưu thông tin người dùng (uid)
+  storeData = async (uid) => {
+    try {
+      await AsyncStorage.setItem('uid', uid);
+    } catch (error) {
+      ToastAndroid.show('Lỗi lưu thông tin người dùng', ToastAndroid.SHORT)
     }
+  };
 
-    // Hàm đăng nhập qua firebase
-    Login = (email, password) => {
-        this.setState({ isLogin: true })
-        firebase.auth().signInWithEmailAndPassword(email, password)
-        .then( () => {
-            // thành công
-            const user = firebase.auth().currentUser;
-            if (user != null) {
-                this.storeData(user.uid);
-            }
-            ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.SHORT)
-            this.props.navigation.navigate('App')
-        }).catch(function(error) {
-            ToastAndroid.show(error.message, ToastAndroid.SHORT);
-        });
-        //Enable nút đăng nhập
-        this.setState({ isLogin: false });
-    };
+  // Xử lý Bấm nút đăng nhập đăng nhập
+  handleSignIn = () => {
+    // Ẩn bàn phím
+    Keyboard.dismiss();
+    const email = this.email.getInputValue();
+    const password = this.password.getInputValue();
+    this.setState({
+      isEmailCorrect: email === '',
+      isPasswordCorrect: password === '',
+    }, () => {
+      if(email !== '' && password !== ''){
+        // Đăng nhập email qua firebase
+        this.Login(email,password);
+      } else {
+        ToastAndroid.show('Vui lòng điền đầy đủ thông tin', ToastAndroid.SHORT);
+      }
+    })
+  }
 
-    render() {
-        return (
-            <>
-                <StatusBar backgroundColor={'green'} barStyle={'light-content'}/>
-                <ImageBackground source={require('../../assets/images/bg02.jpg')} style={styles.imageBackground}>
-                <View style={styles.container}>
-                    <View style={styles.header}>
-                    <View style={styles.header1}>
-                        <Text style={styles.title}>Tham gia ngay!</Text>
-                    </View>
-                    <View style={styles.header2}>
-                        <Image source={require('../../assets/logo/share.png')} style={styles.logo} />
-                        <Text style={styles.titleApp}>Eat Together</Text>
-                    </View>
-                    </View>
-                    <View style={styles.main}>
-                    <InputField
-                        placeholder="Email"
-                        keyboardType="email-address"
-                        style={styles.inputField}
-                        blurOnSubmit={true}
-                        error={this.state.isEmailCorrect}
-                        focus={this.changeInputFocus}
-                        ref={ref => this.email = ref}
-                        icon={email}
-                    />
-                    <InputField
-                        placeholder='Password'
-                        style={styles.inputField}
-                        returnKeyType="done"
-                        secureTextEntry={true}
-                        blurOnSubmit={true}
-                        error={this.state.isPasswordCorrect}
-                        ref={ref => this.password = ref}
-                        focus={this.changeInputFocus}
-                        icon={password}
-                    />
-                    <TouchableOpacity
-                        disabled={this.state.isLogin}
-                        onPress={()=>this.handleSignIn(this)}
-                        style={styles.button}
-                        activeOpacity={0.6} 
-                    >
-                        { this.state.isLogin ? (
-                        <ActivityIndicator size="small" color='white'/>
-                        ) : (
-                        <Text style={styles.text}>Đăng nhập</Text>
-                        )}
-                    </TouchableOpacity>
-                    </View>
-                    <View style={styles.footer}>
-                    <TouchableOpacity
-                        onPress={ () => this.props.navigation.navigate('SignUp') } 
-                        style={styles.touchable} activeOpacity={0.6}>
-                        <Text style={styles.createAccount}>Tạo tài khoản</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={ () => this.props.navigation.navigate('ForgetPassword') } 
-                        style={styles.touchable} activeOpacity={0.6}>
-                        <Text style={styles.forgotPassword}>Quên mật khẩu</Text>
-                    </TouchableOpacity>
-                    </View>
-                </View>
-                </ImageBackground>
-            </>
-            );
-        }
-    };
+  // Hàm đăng nhập qua firebase
+  Login = (email, password) => {
+    this.setState({ isLogin: true })
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .then( () => {
+      let user = firebase.auth().currentUser;
+      if (user != null) {
+        this.storeData(user.uid);
+      }
+      ToastAndroid.show('Đăng nhập thành công!', ToastAndroid.SHORT)
+      this.props.navigation.navigate('App')
+    })
+    .catch(function(error) {
+      ToastAndroid.show(error.message, ToastAndroid.SHORT)
+    });
+    this.setState({ isLogin: false });
+  };
+
+  render() {
+    return (
+      <>
+        <StatusBar backgroundColor={'green'} barStyle={'light-content'}/>
+        <ImageBackground source={require('../../assets/images/bg02.jpg')} style={styles.imageBackground}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+          <View style={styles.header1}>
+            <Text style={styles.title}>Tham gia ngay!</Text>
+          </View>
+          <View style={styles.header2}>
+            <Image source={require('../../assets/logo/share.png')} style={styles.logo} />
+            <Text style={styles.titleApp}>Eat Together</Text>
+          </View>
+          </View>
+          <View style={styles.main}>
+          <InputField
+            placeholder="Email"
+            keyboardType="email-address"
+            style={styles.inputField}
+            blurOnSubmit={true}
+            error={this.state.isEmailCorrect}
+            focus={this.changeInputFocus}
+            ref={ref => this.email = ref}
+            icon={email}
+          />
+          <InputField
+            placeholder='Password'
+            style={styles.inputField}
+            returnKeyType="done"
+            secureTextEntry={true}
+            blurOnSubmit={true}
+            error={this.state.isPasswordCorrect}
+            ref={ref => this.password = ref}
+            focus={this.changeInputFocus}
+            icon={password}
+          />
+          <TouchableOpacity
+            disabled={this.state.isLogin}
+            onPress={()=>this.handleSignIn()}
+            style={styles.button}
+            activeOpacity={0.6} 
+          >
+          { this.state.isLogin ? (
+            <ActivityIndicator size="small" color='white'/>
+          ) : (
+            <Text style={styles.text}>Đăng nhập</Text>
+          )}
+          </TouchableOpacity>
+          </View>
+          <View style={styles.footer}>
+          <TouchableOpacity
+            onPress={ () => this.props.navigation.navigate('SignUp') } 
+            style={styles.touchable} activeOpacity={0.6}>
+            <Text style={styles.createAccount}>Tạo tài khoản</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={ () => this.props.navigation.navigate('ForgetPassword') } 
+            style={styles.touchable} activeOpacity={0.6}>
+            <Text style={styles.forgotPassword}>Quên mật khẩu</Text>
+          </TouchableOpacity>
+          </View>
+        </View>
+        </ImageBackground>
+      </>
+      );
+    }
+  };
 
 const { width } = Dimensions.get('window');
 

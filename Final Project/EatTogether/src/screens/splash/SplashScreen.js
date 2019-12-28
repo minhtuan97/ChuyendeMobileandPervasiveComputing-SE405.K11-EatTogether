@@ -8,6 +8,7 @@ import {
     StyleSheet,
     Text,
     View,
+    ToastAndroid,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -17,25 +18,27 @@ export default class SplashScreen extends Component {
     checkLogined = async () => {
         try {
             // Lấy thông tin người dùng hiện tại
-            const userToken = await AsyncStorage.getItem('uid');
+            const userToken = await AsyncStorage.getItem('uid')
             if (userToken !== null) {
-                // We have data!!
-                // Chuyển hướng
-                this.props.navigation.navigate('App');
+                this.props.navigation.navigate('App')
             } else {
-                this.props.navigation.navigate('Auth');
+                this.props.navigation.navigate('Auth')
             }
         } catch (error) {
-          // Error retrieving data
+          ToastAndroid.show('Lỗi lấy thông tin người dùng', ToastAndroid.SHORT)
         }
     };
 
     // Promise chờ 2s
-    performTimeConsumingTask = async () => {
-        return new Promise( (resolve) =>
-        setTimeout( () => { resolve('result') }, 1000)
-        )
+    performTimeConsumingTask = () => {
+        return new Promise((resolve) =>
+            setTimeout(
+                () => { resolve('result') },
+                2000
+            )
+        );
     }
+      
     
     // Tải dữ liệu và kiểm tra Trạng thái đăng nhập
     async componentDidMount() {
@@ -43,35 +46,35 @@ export default class SplashScreen extends Component {
         // Preload data using AsyncStorage
         const data = await this.performTimeConsumingTask();
         if (data !== null) {
-        this.checkLogined();
+            this.checkLogined();
         }
     }
 
     render() {
         return (
-        <>
-            <StatusBar backgroundColor={'green'} barStyle={'light-content'}/> 
-            <ImageBackground 
-            source={require('../../assets/images/bg03.jpg')} 
-            style={styles.imageBackground}
-            >
+            <>
+                <StatusBar backgroundColor={'green'} barStyle={'light-content'}/> 
+                <ImageBackground 
+                    source={require('../../assets/images/splash.jpg')} 
+                    style={styles.imageBackground}
+                >
 
-                <View style={styles.header}>
-                    <Image source={require('../../assets/logo/share.png')} style={styles.logo} />
-                    <Text style={styles.appTitle}>Eat Together</Text>
-                </View>
+                    <View style={styles.header}>
+                        <Image source={require('../../assets/logo/share.png')} style={styles.logo} />
+                        <Text style={styles.appTitle}>Eat Together</Text>
+                    </View>
 
-                <View style={styles.main}></View>
+                    <View style={styles.main}></View>
 
-                <View style={styles.footer}>
-                    <ActivityIndicator animating={true} color='green' size='small' 
-                    style={styles.activityIndicator}
-                    />
-                    <Text>2019 &copy; SiVai MinhTuan</Text>
-                </View>
+                    <View style={styles.footer}>
+                        <ActivityIndicator animating={true} color='green' size='small' 
+                        style={styles.activityIndicator}
+                        />
+                        <Text style={styles.copyrightText}>2019 &copy; SiVai MinhTuan</Text>
+                    </View>
 
-            </ImageBackground>
-        </>
+                </ImageBackground>
+            </>
         );
     }
     };
@@ -107,4 +110,7 @@ export default class SplashScreen extends Component {
         flex: 2,
         justifyContent: 'center',
     },
+    copyrightText: {
+        color: '#5a5f69',
+    }
 });

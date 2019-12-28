@@ -16,14 +16,12 @@ const data = [
   {
     id: '1',
     avatar: 'http://woridnews.com/wp-content/uploads/2016/10/cd3e35dbcf23269780779b3f7b9e2fcc.png',
-    name: 'Crush số 1',
-    description: 'Crush số 1 waved at you!'
+    name: 'Hồng Nhi',
   },
   {
     id: '4',
     avatar: 'https://d1o7cxaf8di5ts.cloudfront.net/file/brand/member-girlcrush-BM.jpg?d=200',
-    name: 'Crush số 4',
-    description: 'Cảm ơn chúa, bởi người đã gửi nữ thần xinh đẹp nhất của thiên đường vào cuộc sống của con.'
+    name: 'Thảo Mai',
   },
 ];
 

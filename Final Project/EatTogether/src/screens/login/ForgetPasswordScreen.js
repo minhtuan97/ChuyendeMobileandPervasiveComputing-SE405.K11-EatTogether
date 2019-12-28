@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import InputField from "../../components/login/InputField";
 import {w, h, totalSize} from '../../api/Dimensions';
-import fire from '../../api/FirebaseConfig';
+import firebase from '../../api/FirebaseConfig';
 
 const email = require('../../assets/login/email.png');
 
@@ -41,16 +41,16 @@ export default class ForgotPassword extends Component {
     });
   };
 
-  sendEmailWithPassword = (email) => {
+  sendEmailWithPassword = async (email) => {
     this.setState({isSend: true})
-    fire.auth().sendPasswordResetEmail(email)
+    await firebase.auth().sendPasswordResetEmail(email)
     .then(function () {
-      ToastAndroid.show("Kiểm tra email để đặt lại mật khẩu...", ToastAndroid.LONG);
+      ToastAndroid.show("Kiểm tra email để đặt lại mật khẩu...", ToastAndroid.LONG)
     }).catch(function (error) {
-      ToastAndroid.show(error.message, ToastAndroid.LONG);
-    });
-    this.email.resetInputValue();
-    Keyboard.dismiss();
+      ToastAndroid.show(error.message, ToastAndroid.LONG)
+    })
+    this.email.resetInputValue()
+    Keyboard.dismiss()
     this.setState({isSend: false})
   };
 
@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   button: {
+    height: 50,
     width: w(85),
     alignSelf: 'center',
     alignItems: 'center',
